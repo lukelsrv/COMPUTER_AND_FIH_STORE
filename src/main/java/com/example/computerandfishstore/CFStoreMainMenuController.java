@@ -29,10 +29,11 @@ public class CFStoreMainMenuController {
     @FXML
     private TextArea TotalAndContentsTextArea;
 
-    private double mainTotal = 0;
-    private double aquariumTotal = 0;
+    private static int aquariumCounter = 0;
+    private static double mainTotal = 0;
 
     private AquariumBuilderController aquarium;
+    //keeps track of how many aquariums the
 
     @FXML
     /**
@@ -41,7 +42,7 @@ public class CFStoreMainMenuController {
      */
     public void initialize() {
 
-        displayMainTotal();
+        displayCart();
 
         //The controls for the Build Aquarium button
         BuildAquariumButton.setOnMouseClicked(event -> {
@@ -77,15 +78,51 @@ public class CFStoreMainMenuController {
         stage.show();
     }
 
-    public void displayMainTotal(){
-        String mainTotalString = String.format("%.2f", mainTotal);
-        TotalAndContentsTextArea.setText(mainTotalString);
+    /**
+     * Method to display the main total
+     * @return
+     */
+    public String displayMainTotal(){
+        String mainTotalString = String.format("%s%n%n%s%s%.2f%n%n",
+                                        "Your Cart:",
+                                        "Total: ", "$",
+                                        mainTotal);
+        return mainTotalString;
     }
 
-    public double incrementTotal(AquariumBuilderController aquarium){
-        mainTotal += aquarium.getAquariumTotal();
+    /**
+     * method to display the cart, is called in the aquarium builder controller
+     */
+    public void displayCart(){
+
+        String aquariumCounterString = "";
+        if(aquariumCounter > 0){
+            aquariumCounterString = String.format("%s%s%d",
+                    "Custom Aquarium", " x", aquariumCounter);
+        }
+
+        String cartString = String.format("%s%s",
+                    displayMainTotal(), aquariumCounterString);
+
+        TotalAndContentsTextArea.setText(cartString);
+    }
+
+    /**
+     * method to increment the main shopping total, by taking the totals from the other methods and adding to them
+     * @param aquarium
+     * @param aquariumTotal
+     */
+    public void incrementTotal(AquariumBuilderController aquarium, double aquariumTotal){
+        mainTotal += aquariumTotal;
         //mainTotal += computerTotal
         //mainTotal += prices of individual stuff the user wants to buy
-        return mainTotal;
+    }
+
+    /**
+     * Increments the counters related to custom created products by the user
+     */
+    public void incrementCustomBuildCounter(){
+        aquariumCounter += 1;
+        //computer counter += 1
     }
 }

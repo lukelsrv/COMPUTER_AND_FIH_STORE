@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="593.0" prefWidth="797.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.computerandfishstore.CFStoreMainMenuController">
+      <children>
+         <Button fx:id="ShopIndividuallyButton" layoutX="103.0" layoutY="149.0" mnemonicParsing="false" prefHeight="74.0" prefWidth="310.0" text="Shop For Items Individually">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Button>
+         <Button fx:id="BuildComputerButton" layoutX="103.0" layoutY="247.0" mnemonicParsing="false" prefHeight="74.0" prefWidth="310.0" text="Build Custom PC">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Button>
+         <Button fx:id="BuildAquariumButton" layoutX="103.0" layoutY="346.0" mnemonicParsing="false" prefHeight="74.0" prefWidth="310.0" text="Build Custom Aquarium">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Button>
+         <Text fill="#180075" layoutX="72.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Certh Farlonshire's Computer and Fish Store">
+            <font>
+               <Font name="Comic Sans MS" size="31.0" />
+            </font>
+         </Text>
+         <Button fx:id="CheckoutButton" layoutX="103.0" layoutY="442.0" mnemonicParsing="false" prefHeight="74.0" prefWidth="310.0" text="Checkout">
+            <font>
+               <Font size="18.0" />
+            </font>
+         </Button>
+         <TextArea fx:id="TotalAndContentsTextArea" layoutX="460.0" layoutY="147.0" prefHeight="370.0" prefWidth="240.0" editable="false"/>
+      </children>
+   </AnchorPane>

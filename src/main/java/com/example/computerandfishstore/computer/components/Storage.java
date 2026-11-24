@@ -1,25 +1,42 @@
 package com.example.computerandfishstore.computer.components;
 
-import com.example.computerandfishstore.computer.classes.ComponentType;
-import com.example.computerandfishstore.computer.classes.ComputerComponent;
+import com.example.computerandfishstore.computer.classes.RigComponentType;
+import com.example.computerandfishstore.computer.classes.RigComponent;
 
-public class Storage extends ComputerComponent {
+/**
+ * Typed class for Storage.
+ */
+public class Storage extends RigComponent {
 
-	private static final ComponentType COMPONENT_TYPE = ComponentType.STORAGE;
+	private static final RigComponentType COMPONENT_TYPE = RigComponentType.STORAGE;
 
 	private final int capacityGB;
 	private final boolean internal;
 
+	/**
+	 * Constructs a new Storage.
+	 * @param name The name of this Storage.
+	 * @param price The price of this Storage.
+	 * @param requiredPower The required power of this Storage.
+	 * @param capacityGB The capacity of storage in GB of this Storage.
+	 * @param internal Whether this Storage is for internal usage.
+	 */
 	public Storage(String name, double price, int requiredPower, int capacityGB, boolean internal) {
 		super(name, price, COMPONENT_TYPE, requiredPower);
 		this.capacityGB = capacityGB;
 		this.internal = internal;
 	}
 
+	/**
+	 * @return The capacity of storage in GB of this Storage.
+	 */
 	public int getCapacityGB() {
 		return capacityGB;
 	}
 
+	/**
+	 * @return {@code true} if this Storage is for internal usage, otherwise {@code false}.
+	 */
 	public boolean isInternal() {
 		return internal;
 	}

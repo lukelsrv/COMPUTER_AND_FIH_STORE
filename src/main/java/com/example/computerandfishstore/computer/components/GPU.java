@@ -1,19 +1,32 @@
 package com.example.computerandfishstore.computer.components;
 
-import com.example.computerandfishstore.computer.classes.ComponentType;
-import com.example.computerandfishstore.computer.classes.ComputerComponent;
+import com.example.computerandfishstore.computer.classes.RigComponentType;
+import com.example.computerandfishstore.computer.classes.RigComponent;
 
-public class GPU extends ComputerComponent {
+/**
+ * Typed class for GPUs.
+ */
+public class GPU extends RigComponent {
 
-	private static final ComponentType COMPONENT_TYPE = ComponentType.GPU;
+	private static final RigComponentType COMPONENT_TYPE = RigComponentType.GPU;
 
 	private final int capacityGB;
 
+	/**
+	 * Construct a new GPU.
+	 * @param name The name of this GPU.
+	 * @param price The price of this GPU.
+	 * @param requiredPower The required power of this GPU.
+	 * @param capacityGB The capacity of internal RAM in GB of this GPU.
+	 */
 	public GPU(String name, double price, int requiredPower, int capacityGB) {
 		super(name, price, COMPONENT_TYPE, requiredPower);
 		this.capacityGB = capacityGB;
 	}
 
+	/**
+	 * @return The capacity of internal RAM in GB of this GPU.
+	 */
 	public int getCapacityGB() {
 		return capacityGB;
 	}

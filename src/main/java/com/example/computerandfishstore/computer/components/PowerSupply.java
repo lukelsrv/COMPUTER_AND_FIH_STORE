@@ -1,19 +1,31 @@
 package com.example.computerandfishstore.computer.components;
 
-import com.example.computerandfishstore.computer.classes.ComponentType;
-import com.example.computerandfishstore.computer.classes.ComputerComponent;
+import com.example.computerandfishstore.computer.classes.RigComponentType;
+import com.example.computerandfishstore.computer.classes.RigComponent;
 
-public class PowerSupply extends ComputerComponent {
+/**
+ * Typed class for PowerSupplys.
+ */
+public class PowerSupply extends RigComponent {
 
-	private static final ComponentType COMPONENT_TYPE = ComponentType.POWER_SUPPLY;
+	private static final RigComponentType COMPONENT_TYPE = RigComponentType.POWER_SUPPLY;
 
 	private final int suppliedPower;
 
+	/**
+	 * Constructs a new PowerSupply.
+	 * @param name The name of this PowerSupply.
+	 * @param price The price of this PowerSupply.
+	 * @param suppliedPower The amount of power supplied by this PowerSupply.
+	 */
 	public PowerSupply(String name, double price, int suppliedPower) {
 		super(name, price, COMPONENT_TYPE, 0);
 		this.suppliedPower = suppliedPower;
 	}
 
+	/**
+	 * @return The amount of power supplied by this PowerSupply.
+	 */
 	public int getSuppliedPower() {
 		return suppliedPower;
 	}

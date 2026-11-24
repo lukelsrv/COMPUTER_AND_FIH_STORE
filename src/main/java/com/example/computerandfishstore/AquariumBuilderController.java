@@ -520,8 +520,18 @@ public class AquariumBuilderController {
                 //in a try block in case an exception is thrown by an issue reading in the file
                 try {
                     System.out.println("Exit the screen and go back to the main menu");
-                    //Loads the FXML file for the aquarium builder scene and assigns it to the variable "root"
-                    Parent root = FXMLLoader.load(getClass().getResource("CFStoreMainMenu.fxml"));
+                    //Loads the FXML file for the aquarium builder scene and assigns it to the variable "loader"
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("CFStoreMainMenu.fxml"));
+                    //loads the loader assigned to a new parent object called "root"
+                    Parent root = loader.load();
+                    // Get the main menu controller
+                    CFStoreMainMenuController controller = loader.getController();
+                    //Pass this aquarium controller into the increment total method in main menu along with the total price of the aquarium
+                    controller.incrementTotal(this, this.aquariumTotal);
+                    //call the increment aquarium method in the main menu everytime the next button is pressed under these conditions
+                    controller.incrementCustomBuildCounter();
+                    //also update what is being displayed in the main menu
+                    controller.displayCart();
                     //Creates a new stage object for it to use
                     Stage stage = (Stage) NextButton.getScene().getWindow();
                     //creates a new scene using the variable assigned to the FXMLLoader
@@ -987,7 +997,4 @@ public class AquariumBuilderController {
         ErrorsTextArea.setText(error);
     }
 
-    public double getAquariumTotal(){
-        return this.aquariumTotal;
-    }
 }

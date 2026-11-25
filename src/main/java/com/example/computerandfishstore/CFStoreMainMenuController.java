@@ -33,7 +33,6 @@ public class CFStoreMainMenuController {
     private static double mainTotal = 0;
 
     private AquariumBuilderController aquarium;
-    //keeps track of how many aquariums the
 
     @FXML
     /**
@@ -57,6 +56,19 @@ public class CFStoreMainMenuController {
             }
         });
 
+        //The controls for the Build Aquarium button
+        BuildComputerButton.setOnMouseClicked(event -> {
+            //enclosed in a try block in case there is an issue with the goToAquariumBuilder method
+            //specifically an issue reading in the FXML file
+            try {
+                //calls method
+                goToComputerBuilder();
+                //if an issue arises the exception is caught and a message is shown
+            } catch(IOException e) {
+                System.out.print("IOException: Issue Reading File");
+            }
+        });
+
     }
 
     /**
@@ -65,13 +77,26 @@ public class CFStoreMainMenuController {
      */
     private void goToAquariumBuilder() throws IOException {
         //Loads the FXML file for the aquarium builder scene and assigns it to the variable loader
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("AquariumBuilderController.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("AquariumBuilder.fxml"));
         //loads the FXML file and assigns it to a variable called root
         Parent root = loader.load();
         //Creates a new stage object for it to use
         Stage stage = (Stage) BuildAquariumButton.getScene().getWindow();
         //creates a new instance of the aquarium controller each time the aquarium builder is loaded
         aquarium = loader.getController();
+        //creates a new scene using the variable assigned to the FXMLLoader
+        stage.setScene(new Scene(root));
+        //displays the scene
+        stage.show();
+    }
+
+    private void goToComputerBuilder() throws IOException {
+        //Loads the FXML file for the computer builder scene and assigns it to the variable loader
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ComputerBuilder.fxml"));
+        //loads the FXML file and assigns it to a variable called root
+        Parent root = loader.load();
+        //Creates a new stage object for it to use
+        Stage stage = (Stage) BuildComputerButton.getScene().getWindow();
         //creates a new scene using the variable assigned to the FXMLLoader
         stage.setScene(new Scene(root));
         //displays the scene

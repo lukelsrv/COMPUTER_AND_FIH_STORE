@@ -77,7 +77,7 @@ public class CFStoreMainMenuController {
      */
     private void goToAquariumBuilder() throws IOException {
         //Loads the FXML file for the aquarium builder scene and assigns it to the variable loader
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("AquariumBuilder.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("AquariumBuilderController.fxml"));
         //loads the FXML file and assigns it to a variable called root
         Parent root = loader.load();
         //Creates a new stage object for it to use

@@ -2,13 +2,17 @@ package com.example.computerandfishstore.computer.components;
 
 import com.example.computerandfishstore.computer.classes.RigComponentType;
 import com.example.computerandfishstore.computer.classes.RigComponent;
+import javafx.scene.image.Image;
+
+import java.util.List;
 
 /**
- * Typed class for CPU Cooles.
+ * Typed class for CPU Coolers.
  */
 public class CPUCooler extends RigComponent {
 
 	private static final RigComponentType COMPONENT_TYPE = RigComponentType.CPU_COOLER;
+	private static final Image IMAGE = getImage("CPUCOOLER.png");
 
 	/**
 	 * Constructs a new CPUCooler.
@@ -18,6 +22,16 @@ public class CPUCooler extends RigComponent {
 	 */
 	public CPUCooler(String name, double price, int requiredPower) {
 		super(name, price, COMPONENT_TYPE, requiredPower);
+	}
+
+	@Override
+	public Image getImage() {
+		return IMAGE;
+	}
+
+	@Override
+	public List<String> getProperties() {
+		return List.of();
 	}
 
 }

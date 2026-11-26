@@ -2,11 +2,16 @@ package com.example.computerandfishstore.computer.parts;
 
 import com.example.computerandfishstore.computer.classes.ComputerPart;
 import com.example.computerandfishstore.computer.classes.Resolution;
+import javafx.scene.image.Image;
+
+import java.util.List;
 
 /**
  * Typed class for Monitors.
  */
 public class Monitor extends ComputerPart {
+
+	private static final Image IMAGE = getImage("CPU.png");
 
 	private final int screenWidth;
 	private final int screenLength;
@@ -46,6 +51,20 @@ public class Monitor extends ComputerPart {
 	 */
 	public Resolution getResolution() {
 		return resolution;
+	}
+
+	@Override
+	public Image getImage() {
+		return IMAGE;
+	}
+
+	@Override
+	public List<String> getProperties() {
+		return List.of(
+			"Width: " + screenWidth,
+			"Length: " + screenLength,
+			"Resolution: " + resolution
+		);
 	}
 
 }

@@ -1,9 +1,19 @@
 package com.example.computerandfishstore.computer.classes;
 
+import com.example.computerandfishstore.StoreItem;
+import com.example.computerandfishstore.computer.Buildable.Component;
+import javafx.scene.image.Image;
+
+import java.util.List;
+
 /**
  * Typed class for Computer Parts.
  */
-public class ComputerPart {
+public abstract class ComputerPart {
+
+	protected static Image getImage(String fileName) {
+		return new Image(StoreItem.class.getResource("Images/" + fileName).toExternalForm());
+	}
 
 	private final String name;
 	private final double price;
@@ -31,5 +41,9 @@ public class ComputerPart {
 	public double getPrice() {
 		return price;
 	}
+
+	public abstract Image getImage();
+
+	public abstract List<String> getProperties();
 
 }

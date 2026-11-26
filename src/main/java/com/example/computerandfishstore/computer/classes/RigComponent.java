@@ -2,6 +2,7 @@ package com.example.computerandfishstore.computer.classes;
 
 import com.example.computerandfishstore.computer.Buildable.Component;
 import com.example.computerandfishstore.computer.parts.Rig;
+import javafx.scene.image.Image;
 
 /**
  * Typed class for components that are included in making a {@link Rig}.
@@ -27,6 +28,7 @@ public abstract class RigComponent extends ComputerPart implements Component<Rig
 	/**
 	 * @return The type of this RigComponent.
 	 */
+	@Override
 	public RigComponentType getComponentType() {
 		return componentType;
 	}

@@ -2,6 +2,7 @@ package com.example.computerandfishstore.computer;
 
 import com.example.computerandfishstore.computer.utils.Validation;
 import com.example.computerandfishstore.computer.utils.ValidationResult;
+import javafx.scene.image.Image;
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,7 @@ public interface Buildable {
 	 * Interface for displaying the component types that make up a Buildable.
 	 * @param <T> A class that is Buildable.
 	 */
-	interface ComponentEnum<T extends Buildable> {
+	interface ComponentType<T extends Buildable> {
 
 		/**
 		 * @return The minimum amount required for this component type.
@@ -29,6 +30,20 @@ public interface Buildable {
 		int getMaximum();
 
 		/**
+		 * @return Whether this component type can only have one component.
+		 */
+		default boolean isSingle() {
+			return getMaximum() == 1;
+		}
+
+		/**
+		 * @return Whether this component type can have no components.
+		 */
+		default boolean isOptional() {
+			return getMinimum() <= 0;
+		}
+
+		/**
 		 * @return The class linked to this component type.
 		 */
 		Class<? extends Component<T>> getComponentClass();
@@ -39,24 +54,28 @@ public interface Buildable {
 	 * Interface for displaying a class is a component for a Buildable class.
 	 * @param <T> A class that is Buildable.
 	 */
-	interface Component<T extends Buildable> { }
+	interface Component<T extends Buildable> {
+
+		ComponentType<T> getComponentType();
+
+	}
 
 	/**
 	 * Interface for implementing a Builder to build a Buildable.
 	 * @param <T> A class that is Buildable.
 	 * @param <C> A class that has component types for the Buildable class.
 	 */
-	interface Builder<T extends Buildable, C extends ComponentEnum<T>> {
+	interface Builder<T extends Buildable, C extends ComponentType<T>> {
 
 		/**
 		 * @return All component types for the Buildable class.
 		 */
-		C[] getEnum();
+		C[] getTypes();
 
 		/**
 		 * @return The current component type being customized.
 		 */
-		C getCurrent();
+		C getCurrentType();
 
 		/**
 		 * State that the current component type is done being customized and to move on to the next.
@@ -71,12 +90,20 @@ public interface Buildable {
 		 * @return A Validation object on its success or not.
 		 */
 		default Validation next() {
-			C current = getCurrent();
-			// Ensure the number of components for the current component type has fulfilled the minimum requirement.
-			if (getData(current).size() < current.getMinimum())
+			if (!canNext())
 				return new Validation(false, "The current component type has not been fulfilled yet.");
 			return selfNext();
 		}
+
+		default boolean canNext() {
+			C current = getCurrentType();
+			// Ensure the number of components for the current component type has fulfilled the minimum requirement.
+			return getData(current).size() >= current.getMinimum();
+		}
+
+		Validation prev();
+
+		boolean isEnd();
 
 		/**
 		 * @return The current components for each component type.
@@ -98,21 +125,12 @@ public interface Buildable {
 		 * @return The component, otherwise {@code null} if not selected yet or is not single.
 		 */
 		default Component<T> getSingle(C type) {
-			if (!isSingle(type))
+			if (!type.isSingle())
 				return null;
 			List<Component<T>> list = getData(type);
 			if (list.isEmpty())
 				return null;
 			return list.get(0);
-		}
-
-		/**
-		 * Whether the provided component type is singular.
-		 * @param type The component type to check is singular.
-		 * @return {@code true} if the component type is singular, otherwise {@code false}.
-		 */
-		default boolean isSingle(C type) {
-			return type.getMaximum() == 1;
 		}
 
 		/**
@@ -122,7 +140,7 @@ public interface Buildable {
 		 */
 		default double getSum(Function<Component<T>, Number> func) {
 			double sum = 0;
-			for (C type : getEnum()) {
+			for (C type : getTypes()) {
 				List<Component<T>> components = getData(type);
 				for (Component<T> component : components) {
 					sum += func.apply(component).doubleValue();
@@ -162,9 +180,9 @@ public interface Buildable {
 				return new Validation(false, "Provided component is not of the current type being selected.");
 			if (!hasRoom(1))
 				return new Validation(false, "This type of component has already reached the max number allowed.");
-			getData().get(getCurrent()).add(component);
+			getData().get(getCurrentType()).add(component);
 			if (next)
-				selfNext();
+				next();
 			return new Validation(true);
 		}
 
@@ -183,8 +201,12 @@ public interface Buildable {
 					return validation;
 			}
 			if (next)
-				selfNext();
+				next();
 			return new Validation(true);
+		}
+
+		default boolean remove(Component<T> component) {
+			return getData(getCurrentType()).remove(component);
 		}
 
 		/**
@@ -193,17 +215,17 @@ public interface Buildable {
 		 * @return {@code true} if the component is of the correct type, otherwise {@code false}.
 		 */
 		default boolean isCorrectType(Component<T> component) {
-			C current = getCurrent();
+			C current = getCurrentType();
 			return current.getComponentClass().isInstance(component);
 		}
 
 		/**
-		 * Helper method for checking if the current component type has enough room for number of {@code with} via {@link ComponentEnum#getMaximum()}.
+		 * Helper method for checking if the current component type has enough room for number of {@code with} via {@link ComponentType#getMaximum()}.
 		 * @param with The number to check room for.
 		 * @return {@code true} if there is enough room, otherwise {@code false}.
 		 */
 		default boolean hasRoom(int with) {
-			C current = getCurrent();
+			C current = getCurrentType();
 			List<Component<T>> list = getData(current);
 			return list.size() + with <= current.getMaximum();
 		}
@@ -221,7 +243,7 @@ public interface Buildable {
 		 * @return The ValidationResult object with the Buildable object if passed, otherwise reasoning on failure.
 		 */
 		default ValidationResult<T> build() {
-			for (C type : getEnum()) {
+			for (C type : getTypes()) {
 				int size = getData(type).size();
 				if (size < type.getMinimum()) {
 					return new ValidationResult<>(false, "One of the component types did not meet the minimum requirements.");

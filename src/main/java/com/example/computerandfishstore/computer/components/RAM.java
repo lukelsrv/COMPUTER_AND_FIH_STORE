@@ -2,6 +2,9 @@ package com.example.computerandfishstore.computer.components;
 
 import com.example.computerandfishstore.computer.classes.RigComponentType;
 import com.example.computerandfishstore.computer.classes.RigComponent;
+import javafx.scene.image.Image;
+
+import java.util.List;
 
 /**
  * Typed class for RAM.
@@ -9,6 +12,7 @@ import com.example.computerandfishstore.computer.classes.RigComponent;
 public class RAM extends RigComponent {
 
 	private static final RigComponentType COMPONENT_TYPE = RigComponentType.RAM;
+	private static final Image IMAGE = getImage("RAM.png");
 
 	private final int ramDDR;
 	private final int speed;
@@ -49,6 +53,20 @@ public class RAM extends RigComponent {
 	 */
 	public int getCapacityGB() {
 		return capacityGB;
+	}
+
+	@Override
+	public Image getImage() {
+		return IMAGE;
+	}
+
+	@Override
+	public List<String> getProperties() {
+		return List.of(
+			"RAM: DDR" + ramDDR,
+			"Speed: " + speed + "MT/s",
+			"Capacity: " + capacityGB + "GB"
+		);
 	}
 
 }

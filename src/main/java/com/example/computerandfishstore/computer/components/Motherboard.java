@@ -3,7 +3,9 @@ package com.example.computerandfishstore.computer.components;
 import com.example.computerandfishstore.computer.classes.BrandType;
 import com.example.computerandfishstore.computer.classes.RigComponentType;
 import com.example.computerandfishstore.computer.classes.RigComponent;
+import javafx.scene.image.Image;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,6 +14,7 @@ import java.util.Set;
 public class Motherboard extends RigComponent {
 
 	private static final RigComponentType COMPONENT_TYPE = RigComponentType.MOTHERBOARD;
+	private static final Image IMAGE = getImage("MOTHERBOARD.png");
 
 	private final int ramDDR;
 	private final Set<BrandType> supportedBrands;
@@ -42,6 +45,19 @@ public class Motherboard extends RigComponent {
 	 */
 	public Set<BrandType> getSupportedBrands() {
 		return supportedBrands;
+	}
+
+	@Override
+	public Image getImage() {
+		return IMAGE;
+	}
+
+	@Override
+	public List<String> getProperties() {
+		return List.of(
+			"RAM: DDR" + ramDDR,
+			"Supports: " + supportedBrands
+		);
 	}
 
 }

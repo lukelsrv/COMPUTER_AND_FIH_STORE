@@ -2,11 +2,16 @@ package com.example.computerandfishstore.computer.parts;
 
 import com.example.computerandfishstore.computer.classes.ComputerPart;
 import com.example.computerandfishstore.computer.classes.KeyboardSize;
+import javafx.scene.image.Image;
+
+import java.util.List;
 
 /**
  * Typed class for Keyboards.
  */
 public class Keyboard extends ComputerPart {
+
+	private static final Image IMAGE = getImage("CPU.png");
 
 	private final KeyboardSize size;
 	private final boolean rgb;
@@ -36,6 +41,19 @@ public class Keyboard extends ComputerPart {
 	 */
 	public boolean hasRGB() {
 		return rgb;
+	}
+
+	@Override
+	public Image getImage() {
+		return IMAGE;
+	}
+
+	@Override
+	public List<String> getProperties() {
+		return List.of(
+			"Size: " + size,
+			"RGB: " + (rgb ? "Yes" : "No")
+		);
 	}
 
 }

@@ -7,6 +7,7 @@ import com.example.computerandfishstore.computer.classes.ComputerPart;
 import com.example.computerandfishstore.computer.components.*;
 import com.example.computerandfishstore.computer.utils.Validation;
 import com.example.computerandfishstore.computer.utils.ValidationResult;
+import javafx.scene.image.Image;
 
 import java.util.*;
 
@@ -14,6 +15,8 @@ import java.util.*;
  * Typed class for Rigs.
  */
 public class Rig extends ComputerPart implements Buildable {
+
+	private static final Image IMAGE = getImage("CPUCOOLER.png");
 
 	private final Motherboard motherboard;
 	private final CPU cpu;
@@ -105,6 +108,24 @@ public class Rig extends ComputerPart implements Buildable {
 		return powerSupply;
 	}
 
+	@Override
+	public Image getImage() {
+		return IMAGE;
+	}
+
+	@Override
+	public List<String> getProperties() {
+		return List.of(
+			"Motherboard: " + motherboard.getName(),
+			"CPU: " + cpu.getName(),
+			"RAM: " + rams,
+			"GPU: " + gpu.getName(),
+			"Storages: " + storages,
+			"CPU Cooler: " + cpuCooler.getName(),
+			"Power Supply: " + powerSupply.getName()
+		);
+	}
+
 	/**
 	 * Builder class for customizing the components of a {@link Rig} before finalization.
 	 */
@@ -134,24 +155,46 @@ public class Rig extends ComputerPart implements Buildable {
 		}
 
 		@Override
-		public RigComponentType[] getEnum() {
+		public RigComponentType[] getTypes() {
 			return COMPONENT_TYPES;
 		}
 
 		@Override
-		public RigComponentType getCurrent() {
+		public RigComponentType getCurrentType() {
 			return currentComponent;
 		}
 
 		@Override
 		public Validation selfNext() {
 			// Move on to the next component for customizing.
-			if (currentIndex >= COMPONENT_TYPES.length) {
+			if (currentIndex >= COMPONENT_TYPES.length - 1) {
 				currentComponent = null;
 			} else {
-				currentComponent = COMPONENT_TYPES[currentIndex++];
+				currentComponent = COMPONENT_TYPES[++currentIndex];
+			}
+			if (currentComponent != null) {
+				List<Component<Rig>> components = getData(currentComponent);
+				if (!components.isEmpty()) {
+					for (Component<Rig> component : components) {
+						if (!filter(component))
+							components.remove(component);
+					}
+				}
 			}
 			return new Validation(true);
+		}
+
+		@Override
+		public Validation prev() {
+			if (currentIndex >= 1) {
+				currentComponent = COMPONENT_TYPES[--currentIndex];
+			}
+			return new Validation(true);
+		}
+
+		@Override
+		public boolean isEnd() {
+			return currentIndex == COMPONENT_TYPES.length;
 		}
 
 		@Override

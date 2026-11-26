@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.text.TextFlow?>
 
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.Cursor?>
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="562.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="computerBuilderPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="562.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.computerandfishstore.ComputerBuilder">
    <children>
       <Text fill="#7b3e00" layoutX="250.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Computer Builder" AnchorPane.bottomAnchor="506.671875" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="249.15625" AnchorPane.topAnchor="23.328125">
          <font>
@@ -21,129 +28,78 @@
       </Text>
       <Pane layoutX="11.0" layoutY="72.0" prefHeight="478.0" prefWidth="447.0">
          <children>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="467.0" prefWidth="447.0">
+            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" hmax="0.0" prefHeight="478.0" prefWidth="447.0" style="-fx-border-width: 0;">
                <content>
-                  <Pane fx:id="MainPane" id="MainPane" prefHeight="2019.0" prefWidth="418.0" style="-fx-background-color: #FFDEB0;">
+                  <GridPane id="itemGrid" fx:id="itemGrid" nodeOrientation="LEFT_TO_RIGHT" style="-fx-border-width: 0; -fx-border-radius: 0;">
+                    <columnConstraints>
+                      <ColumnConstraints />
+                      <ColumnConstraints hgrow="ALWAYS" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints />
+                      <RowConstraints vgrow="ALWAYS" />
+                      <RowConstraints vgrow="SOMETIMES" />
+                    </rowConstraints>
                      <children>
-                        <Pane fx:id="MotherboardPane" id="MotherboardPane" layoutX="23.0" layoutY="14.0" prefHeight="271.0" prefWidth="185.0" style="-fx-background-color: #FFC573;" visible="false">
+                        <VBox alignment="TOP_CENTER" prefWidth="220.0" spacing="10.0" style="-fx-background-color: #FFDEB0;">
                            <children>
-                              <ImageView fx:id="MotherboardImg" id="MotherboardImg" fitHeight="94.0" fitWidth="166.0" layoutX="44.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@Images/MOTHERBOARD.png" />
-                                 </image>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </ImageView>
-                              <Button fx:id="MotherboardMinusButton" id="MotherboardMinusButton" layoutX="48.0" layoutY="232.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="-" />
-                              <Button fx:id="MotherboardPlusButton" id="MotherboardPlusButton" layoutX="111.0" layoutY="232.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="+" />
-                              <TextFlow fx:id="MotherboardTextBox" id="MotherboardTextBox" layoutX="5.0" layoutY="94.0" prefHeight="136.0" prefWidth="178.0" textAlignment="CENTER" />
+                              <VBox alignment="TOP_CENTER">
+                                 <children>
+                                    <Label id="itemLabel" text="Label" underline="true">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <ImageView id="itemImage" fx:id="PowerSupplyIMG" fitHeight="94.0" fitWidth="166.0" pickOnBounds="true" preserveRatio="true" x="45.0">
+                                       <image>
+                                          <Image url="@Images/POWERSUPPLY.png" />
+                                       </image>
+                                       <cursor>
+                                          <Cursor fx:constant="DEFAULT" />
+                                       </cursor>
+                                       <viewport>
+                                          <Rectangle2D />
+                                       </viewport>
+                                    </ImageView>
+                                 </children>
+                              </VBox>
+                              <VBox id="itemPropertyContainer" alignment="TOP_CENTER">
+                                 <children>
+                                    <Label id="itemPropertyLabel" text="Brand: Intel" />
+                                 </children>
+                              </VBox>
+                              <HBox spacing="20.0">
+                                 <children>
+                                    <Button id="itemMinusButton" fx:id="PowerSupplyMinusButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="-">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button id="itemPlusButton" fx:id="PowerSupplyPlusButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="+" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets bottom="10.0" left="75.0" top="30.0" />
+                                 </padding>
+                              </HBox>
                            </children>
-                        </Pane>
-                        <Pane fx:id="CPUPane" id="CPUPane" layoutX="23.0" layoutY="14.0" prefHeight="271.0" prefWidth="185.0" style="-fx-background-color: #FFC573;" visible="false">
-                           <children>
-                              <ImageView fx:id="CPUImg" id="CPUImg" fitHeight="94.0" fitWidth="166.0" layoutX="44.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@Images/CPU.png" />
-                                 </image>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </ImageView>
-                              <Button fx:id="CPUMinusButton" id="CPUMinusButton" layoutX="48.0" layoutY="232.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="-" />
-                              <Button fx:id="CPUPlusButton" id="CPUPlusButton" layoutX="111.0" layoutY="232.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="+" />
-                              <TextFlow fx:id="CPUTextBox" id="CPUTextBox" layoutX="5.0" layoutY="94.0" prefHeight="136.0" prefWidth="178.0" textAlignment="CENTER" />
-                           </children>
-                        </Pane>
-                        <Pane fx:id="RAMPane" id="RAMPane" layoutX="22.0" layoutY="15.0" prefHeight="271.0" prefWidth="185.0" style="-fx-background-color: #FFC573;" visible="false">
-                           <children>
-                              <ImageView fx:id="RAMImg" id="RAMImg" fitHeight="94.0" fitWidth="166.0" layoutX="44.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@Images/RAM.png" />
-                                 </image>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </ImageView>
-                              <Button fx:id="RAMMinusButton" id="RAMMinusButton" layoutX="48.0" layoutY="232.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="-" />
-                              <Button fx:id="RAMPlusButton" id="RAMPlusButton" layoutX="111.0" layoutY="232.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="+" />
-                              <TextFlow fx:id="RAMTextBox" id="RAMTextBox" layoutX="5.0" layoutY="94.0" prefHeight="136.0" prefWidth="178.0" textAlignment="CENTER" />
-                           </children>
-                        </Pane>
-                        <Pane fx:id="GPUPane" id="GPUPane" layoutX="22.0" layoutY="14.0" prefHeight="229.0" prefWidth="185.0" style="-fx-background-color: #FFC573;" visible="false">
-                           <children>
-                              <ImageView fx:id="GPUImg" id="GPUImg" fitHeight="94.0" fitWidth="166.0" layoutX="44.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@Images/GPU.png" />
-                                 </image>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </ImageView>
-                              <Button fx:id="GPUMinusButton" id="GPUMinusButton" layoutX="50.0" layoutY="190.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="-" />
-                              <Button fx:id="GPUPlusButton" id="GPUPlusButton" layoutX="109.0" layoutY="190.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="+" />
-                              <TextFlow fx:id="GPUTextBox" id="GPUTextBox" layoutX="5.0" layoutY="94.0" prefHeight="80.0" prefWidth="178.0" textAlignment="CENTER" />
-                           </children>
-                        </Pane>
-                        <Pane fx:id="StoragePane" id="StoragePane" layoutX="23.0" layoutY="14.0" prefHeight="271.0" prefWidth="185.0" style="-fx-background-color: #FFC573;" visible="false">
-                           <children>
-                              <ImageView fx:id="StorageImg" id="StorageImg" fitHeight="94.0" fitWidth="166.0" layoutX="44.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@Images/STORAGE.png" />
-                                 </image>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </ImageView>
-                              <Button fx:id="StorageMinusButton" id="StorageMinusButton" layoutX="48.0" layoutY="232.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="-" />
-                              <Button fx:id="StoragePlusButton" id="StoragePlusButton" layoutX="111.0" layoutY="232.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="+" />
-                              <TextFlow fx:id="StorageTextBox" id="StorageTextBox" layoutX="5.0" layoutY="94.0" prefHeight="136.0" prefWidth="178.0" textAlignment="CENTER" />
-                           </children>
-                        </Pane>
-                        <Pane fx:id="CPUCoolerPane" id="CPUCoolerPane" layoutX="22.0" layoutY="14.0" prefHeight="212.0" prefWidth="185.0" style="-fx-background-color: #FFC573;">
-                           <children>
-                              <ImageView fx:id="CPUCoolerImg" id="CPUCoolerImg" fitHeight="94.0" fitWidth="166.0" layoutX="44.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@Images/CPUCOOLER.png" />
-                                 </image>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </ImageView>
-                              <Button fx:id="CPUCoolerMinusButton" id="CPUCoolerMinusButton" layoutX="50.0" layoutY="171.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="-" />
-                              <Button fx:id="CPUCoolerPlusButton" id="CPUCoolerPlusButton" layoutX="113.0" layoutY="171.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="+" />
-                              <TextFlow fx:id="CPUCoolerTextBox" id="CPUCoolerTextBox" layoutX="5.0" layoutY="94.0" prefHeight="66.0" prefWidth="178.0" textAlignment="CENTER" />
-                           </children>
-                        </Pane>
-                        <Pane fx:id="PowerSupplyPane" id="PowerSupplyPane" layoutX="22.0" layoutY="14.0" prefHeight="212.0" prefWidth="185.0" style="-fx-background-color: #FFC573;">
-                           <children>
-                              <ImageView fx:id="PowerSupplyIMG" id="PowerSupplyImg" fitHeight="94.0" fitWidth="166.0" layoutX="44.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@Images/POWERSUPPLY.png" />
-                                 </image>
-                                 <cursor>
-                                    <Cursor fx:constant="DEFAULT" />
-                                 </cursor>
-                              </ImageView>
-                              <Button fx:id="PowerSupplyMinusButton" id="PowerSupplyMinusButton" layoutX="50.0" layoutY="171.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="-" />
-                              <Button fx:id="PowerSupplyPlusButton" id="PowerSupplyPlusButton" layoutX="113.0" layoutY="171.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" text="+" />
-                              <TextFlow fx:id="PowerSupplyTextBox" id="PowerSupplyTextBox" layoutX="5.0" layoutY="94.0" prefHeight="66.0" prefWidth="178.0" textAlignment="CENTER" />
-                           </children>
-                        </Pane>
+                        </VBox>
                      </children>
-                  </Pane>
+                  </GridPane>
                </content>
             </ScrollPane>
          </children>
       </Pane>
-      <Pane fx:id="ComputerContentsPane" id="ComputerContentsPane" layoutX="468.0" layoutY="68.0" prefHeight="401.0" prefWidth="262.0" style="-fx-background-color: #FFDEB0;">
+      <Pane id="ComputerContentsPane" fx:id="ComputerContentsPane" layoutX="468.0" layoutY="68.0" prefHeight="401.0" prefWidth="262.0" style="-fx-background-color: #FFDEB0;">
          <children>
-            <TextArea fx:id="PriceAndChosenComponentsTextArea" id="PriceAndChosenComponentsTextArea" editable="false" layoutX="12.0" layoutY="13.0" prefHeight="218.0" prefWidth="239.0" />
-            <TextArea fx:id="OthertextArea" id="OtherTextArea" layoutX="12.0" layoutY="228.0" prefHeight="80.0" prefWidth="239.0" />
-            <TextArea fx:id="ComputerErrors" id="ComputerErrors" layoutX="12.0" layoutY="308.0" prefHeight="80.0" prefWidth="239.0" />
+            <TextArea id="PriceAndChosenComponentsTextArea" fx:id="PriceAndChosenComponentsTextArea" editable="false" layoutX="12.0" layoutY="13.0" prefHeight="218.0" prefWidth="239.0" />
+            <TextArea id="OtherTextArea" fx:id="OthertextArea" layoutX="12.0" layoutY="228.0" prefHeight="80.0" prefWidth="239.0" />
+            <TextArea id="ComputerErrors" fx:id="ComputerErrors" layoutX="12.0" layoutY="308.0" prefHeight="80.0" prefWidth="239.0" />
          </children>
       </Pane>
-      <Button fx:id="NextButton" id="NextButton" layoutX="608.0" layoutY="497.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="83.0" text="Next" />
-      <Button fx:id="BackButton" id="BackButton" layoutX="503.0" layoutY="497.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="83.0" text="Back" />
+      <Button id="nextButton" fx:id="nextButton" layoutX="608.0" layoutY="497.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="83.0" text="Next" />
+      <Button id="BackButton" fx:id="backButton" layoutX="503.0" layoutY="497.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="83.0" text="Back" />
    </children>
 </AnchorPane>

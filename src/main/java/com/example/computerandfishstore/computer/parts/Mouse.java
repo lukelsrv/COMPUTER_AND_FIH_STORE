@@ -2,11 +2,16 @@ package com.example.computerandfishstore.computer.parts;
 
 import com.example.computerandfishstore.computer.classes.ComputerPart;
 import com.example.computerandfishstore.computer.classes.MouseType;
+import javafx.scene.image.Image;
+
+import java.util.List;
 
 /**
  * Typed class for Mouses.
  */
 public class Mouse extends ComputerPart {
+
+	private static final Image IMAGE = getImage("CPU.png");
 
 	private final MouseType mouseType;
 
@@ -26,6 +31,16 @@ public class Mouse extends ComputerPart {
 	 */
 	public MouseType getMouseType() {
 		return mouseType;
+	}
+
+	@Override
+	public Image getImage() {
+		return IMAGE;
+	}
+
+	@Override
+	public List<String> getProperties() {
+		return List.of("Type: " + mouseType);
 	}
 
 }

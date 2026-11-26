@@ -3,6 +3,9 @@ package com.example.computerandfishstore.computer.components;
 import com.example.computerandfishstore.computer.classes.BrandType;
 import com.example.computerandfishstore.computer.classes.RigComponentType;
 import com.example.computerandfishstore.computer.classes.RigComponent;
+import javafx.scene.image.Image;
+
+import java.util.List;
 
 /**
  * Typed class for CPUs.
@@ -10,6 +13,7 @@ import com.example.computerandfishstore.computer.classes.RigComponent;
 public class CPU extends RigComponent {
 
 	private static final RigComponentType COMPONENT_TYPE = RigComponentType.CPU;
+	private static final Image IMAGE = getImage("CPU.png");
 
 	private final BrandType brandType;
 	private final int cores;
@@ -58,6 +62,20 @@ public class CPU extends RigComponent {
 	 */
 	public boolean supports(BrandType brandType) {
 		return this.brandType == brandType;
+	}
+
+	@Override
+	public Image getImage() {
+		return IMAGE;
+	}
+
+	@Override
+	public List<String> getProperties() {
+		return List.of(
+			"Brand Type: " + brandType,
+			"Cores: " + cores,
+			"Processors: " + processors
+		);
 	}
 
 }

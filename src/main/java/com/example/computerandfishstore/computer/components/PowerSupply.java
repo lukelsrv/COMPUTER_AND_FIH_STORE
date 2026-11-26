@@ -2,6 +2,9 @@ package com.example.computerandfishstore.computer.components;
 
 import com.example.computerandfishstore.computer.classes.RigComponentType;
 import com.example.computerandfishstore.computer.classes.RigComponent;
+import javafx.scene.image.Image;
+
+import java.util.List;
 
 /**
  * Typed class for PowerSupplys.
@@ -9,6 +12,7 @@ import com.example.computerandfishstore.computer.classes.RigComponent;
 public class PowerSupply extends RigComponent {
 
 	private static final RigComponentType COMPONENT_TYPE = RigComponentType.POWER_SUPPLY;
+	private static final Image IMAGE = getImage("POWERSUPPLY.png");
 
 	private final int suppliedPower;
 
@@ -28,6 +32,16 @@ public class PowerSupply extends RigComponent {
 	 */
 	public int getSuppliedPower() {
 		return suppliedPower;
+	}
+
+	@Override
+	public Image getImage() {
+		return IMAGE;
+	}
+
+	@Override
+	public List<String> getProperties() {
+		return List.of("Supplies: " + suppliedPower + "W");
 	}
 
 }

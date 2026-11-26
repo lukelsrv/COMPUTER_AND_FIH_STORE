@@ -2,6 +2,9 @@ package com.example.computerandfishstore.computer.components;
 
 import com.example.computerandfishstore.computer.classes.RigComponentType;
 import com.example.computerandfishstore.computer.classes.RigComponent;
+import javafx.scene.image.Image;
+
+import java.util.List;
 
 /**
  * Typed class for Storage.
@@ -9,6 +12,7 @@ import com.example.computerandfishstore.computer.classes.RigComponent;
 public class Storage extends RigComponent {
 
 	private static final RigComponentType COMPONENT_TYPE = RigComponentType.STORAGE;
+	private static final Image IMAGE = getImage("STORAGE.png");
 
 	private final int capacityGB;
 	private final boolean internal;
@@ -39,6 +43,19 @@ public class Storage extends RigComponent {
 	 */
 	public boolean isInternal() {
 		return internal;
+	}
+
+	@Override
+	public Image getImage() {
+		return IMAGE;
+	}
+
+	@Override
+	public List<String> getProperties() {
+		return List.of(
+			"Internal: " + (internal ? "Yes" : "No"),
+			"Capacity: " + capacityGB + "GB"
+		);
 	}
 
 }

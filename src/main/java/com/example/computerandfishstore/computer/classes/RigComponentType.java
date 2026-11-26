@@ -1,10 +1,10 @@
 package com.example.computerandfishstore.computer.classes;
 
-import com.example.computerandfishstore.computer.Buildable.ComponentEnum;
+import com.example.computerandfishstore.computer.Buildable.ComponentType;
 import com.example.computerandfishstore.computer.components.*;
 import com.example.computerandfishstore.computer.parts.Rig;
 
-public enum RigComponentType implements ComponentEnum<Rig> {
+public enum RigComponentType implements ComponentType<Rig> {
 
 	MOTHERBOARD(Motherboard.class, 1),
 	CPU(CPU.class, 1),

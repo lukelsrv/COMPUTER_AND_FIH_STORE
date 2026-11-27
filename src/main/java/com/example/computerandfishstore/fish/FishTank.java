@@ -5,17 +5,22 @@ import javafx.scene.image.Image;
 
 import java.util.List;
 
-public class FishTank extends StoreItem {
+public class FishTank extends AquariumComponent {
+
+	private static final AquariumComponentType COMPONENT_TYPE = AquariumComponentType.TANK;
 
 	private final double gallons;
+	private final Image image;
 
 	public FishTank(
 		String name,
 		double price,
-		double gallons
+		double gallons,
+		String image
 	) {
-		super(name, price);
+		super(name, price, COMPONENT_TYPE);
 		this.gallons = gallons;
+		this.image = getImage(image);
 	}
 
 	public double getGallons(){
@@ -24,7 +29,7 @@ public class FishTank extends StoreItem {
 
 	@Override
 	public Image getImage() {
-		return null;
+		return image;
 	}
 
 	@Override

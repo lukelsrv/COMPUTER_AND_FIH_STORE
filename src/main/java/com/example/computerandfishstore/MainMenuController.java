@@ -1,7 +1,11 @@
 package com.example.computerandfishstore;
 
+import com.example.computerandfishstore.classes.Buildable;
+import com.example.computerandfishstore.classes.Buildable.Builder;
+import com.example.computerandfishstore.classes.Buildable.ComponentType;
 import com.example.computerandfishstore.classes.Cart;
-import com.example.computerandfishstore.fish.AquariumBuilderController;
+import com.example.computerandfishstore.computer.parts.Rig.RigBuilder;
+import com.example.computerandfishstore.fish.Aquarium;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -14,24 +18,24 @@ import java.io.IOException;
 
 public class MainMenuController {
 
+	public static final Cart CART = new Cart();
+
 	//creates Button variables for the buttons on the main menu FXML sheet
 	@FXML
-	private Button ShopIndividuallyButton;
+	private Button shopButton;
 
 	@FXML
-	private Button BuildComputerButton;
+	private Button buildComputerButton;
 
 	@FXML
-	private Button BuildAquariumButton;
+	private Button buildAquariumButton;
 
 	@FXML
-	private Button CheckoutButton;
+	private Button checkoutButton;
 
 	//creates a variable for the text area
 	@FXML
 	private TextArea TotalAndContentsTextArea;
-
-	private AquariumBuilderController aquarium;
 
 	@FXML
 	/**
@@ -39,65 +43,43 @@ public class MainMenuController {
 	 * Contains the controls for the buttons
 	 */
 	public void initialize() {
-
 		displayCart();
 
-		//The controls for the Build Aquarium button
-		BuildAquariumButton.setOnMouseClicked(event -> {
-			//enclosed in a try block in case there is an issue with the goToAquariumBuilder method
-			//specifically an issue reading in the FXML file
-			try {
-				//calls method
-				goToAquariumBuilder();
-			//if an issue arises the exception is caught and a message is shown
-			} catch(IOException e) {
-				System.out.print("IOException: Issue Reading File");
-			}
-		});
+		shopButton.setOnAction(event -> toShop());
 
 		//The controls for the Build Aquarium button
-		BuildComputerButton.setOnMouseClicked(event -> {
-			//enclosed in a try block in case there is an issue with the goToAquariumBuilder method
-			//specifically an issue reading in the FXML file
-			goToComputerBuilder();
-		});
+		buildAquariumButton.setOnMouseClicked(event -> toBuilder(new Aquarium.AquariumBuilder()));
+
+		//The controls for the Build Aquarium button
+		buildComputerButton.setOnMouseClicked(event -> toBuilder(new RigBuilder()));
 
 	}
 
-	/**
-	 * Method for switching to the aquarium building interface
-	 * @throws IOException
-	 */
-	private void goToAquariumBuilder() throws IOException {
-		//Loads the FXML file for the aquarium builder scene and assigns it to the variable loader
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("AquariumBuilderController.fxml"));
-		//loads the FXML file and assigns it to a variable called root
-		Parent root = loader.load();
-		//Creates a new stage object for it to use
-		Stage stage = (Stage) BuildAquariumButton.getScene().getWindow();
-		//creates a new instance of the aquarium controller each time the aquarium builder is loaded
-		aquarium = loader.getController();
-		//creates a new scene using the variable assigned to the FXMLLoader
-		stage.setScene(new Scene(root));
-		//displays the scene
-		stage.show();
-	}
-
-	private void goToComputerBuilder() {
-		//Loads the FXML file for the computer builder scene and assigns it to the variable loader
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("ComputerBuilder.fxml"));
-		//loads the FXML file and assigns it to a variable called root
-		Parent root = null;
+	private void toShop() {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("ShopMenu.fxml"));
+		Parent root;
 		try {
 			root = loader.load();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		//Creates a new stage object for it to use
-		Stage stage = (Stage) BuildComputerButton.getScene().getWindow();
-		//creates a new scene using the variable assigned to the FXMLLoader
+		Stage stage = (Stage) buildAquariumButton.getScene().getWindow();
 		stage.setScene(new Scene(root));
-		//displays the scene
+		stage.show();
+	}
+
+	private <B extends Buildable, C extends ComponentType<B>> void toBuilder(Builder<B, C> builder) {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("BuilderMenu.fxml"));
+		Parent root;
+		try {
+			root = loader.load();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		Stage stage = (Stage) buildAquariumButton.getScene().getWindow();
+		BuilderMenuController<B, C> builderMenuController = loader.getController();
+		builderMenuController.init(builder);
+		stage.setScene(new Scene(root));
 		stage.show();
 	}
 
@@ -105,7 +87,7 @@ public class MainMenuController {
 	 * method to display the cart, is called in the aquarium builder controller
 	 */
 	public void displayCart() {
-		TotalAndContentsTextArea.setText(Cart.getDisplay());
+		TotalAndContentsTextArea.setText(CART.getDisplay());
 	}
 
 }

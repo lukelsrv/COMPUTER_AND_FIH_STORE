@@ -9,6 +9,4 @@ module com.example.computerandfishstore {
     opens com.example.computerandfishstore.fish to javafx.fxml;
 	exports com.example.computerandfishstore.classes;
 	opens com.example.computerandfishstore.classes to javafx.fxml;
-	exports com.example.computerandfishstore.computer;
-	opens com.example.computerandfishstore.computer to javafx.fxml;
 }

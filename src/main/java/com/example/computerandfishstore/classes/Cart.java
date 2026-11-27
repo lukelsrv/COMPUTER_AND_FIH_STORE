@@ -7,50 +7,80 @@ import java.util.Set;
 
 public class Cart {
 
-	private static final Map<StoreItem, Integer> CART = new HashMap<>();
+	private final Map<StoreItem, Integer> items = new HashMap<>();
 
-	public static String getDisplay() {
+	public Cart() {}
+
+	public String getItemsDisplay() {
 		String text = "Cart: \n";
-		double total = 0;
-		for (Entry<StoreItem, Integer> entry : CART.entrySet()) {
-			StoreItem part = entry.getKey();
+		for (Entry<StoreItem, Integer> entry : items.entrySet()) {
+			StoreItem item = entry.getKey();
 			Integer amount = entry.getValue();
-			text += part.getName() + " x" + amount + "\n";
-			total += (part.getPrice() * amount);
+			text += item.getName() + " x" + amount + "\n";
 		}
-		text += "\nTotal: $" + String.format("%.2f", total);
 		return text;
 	}
 
-	public static Set<StoreItem> getItems() {
-		return CART.keySet();
+	public String getDisplay() {
+		String text = "Cart: \n";
+		double total = 0;
+		for (Entry<StoreItem, Integer> entry : items.entrySet()) {
+			StoreItem item = entry.getKey();
+			Integer amount = entry.getValue();
+			text += item.getName() + " x" + amount + "\n";
+			total += (item.getPrice() * amount);
+		}
+		text += "\nTotal: $" + String.format("%,.2f", total);
+		return text;
 	}
 
-	public static int getAmount(StoreItem part) {
-		if (!CART.containsKey(part))
+	public Set<StoreItem> getItems() {
+		return items.keySet();
+	}
+
+	public int getAmount(StoreItem item) {
+		if (!items.containsKey(item))
 			return 0;
-		return CART.get(part);
+		return items.get(item);
 	}
 
-	public static void add(StoreItem part) {
-		add(part, 1);
+	public double getTotalCost() {
+		double total = 0;
+		for (Entry<StoreItem, Integer> entry : items.entrySet()) {
+			StoreItem item = entry.getKey();
+			Integer amount = entry.getValue();
+			total += (item.getPrice() * amount);
+		}
+		return total;
 	}
 
-	public static void add(StoreItem part, int amount) {
-		CART.put(part, getAmount(part) + amount);
+	public void add(StoreItem item) {
+		add(item, 1);
 	}
 
-	public static void remove(StoreItem part) {
-		remove(part, 1);
+	public void add(StoreItem item, int amount) {
+		items.put(item, getAmount(item) + amount);
 	}
 
-	public static void remove(StoreItem part, int amount) {
-		int current = getAmount(part);
+	public void remove(StoreItem item) {
+		remove(item, 1);
+	}
+
+	public void remove(StoreItem item, int amount) {
+		int current = getAmount(item);
 		current -= amount;
 		if (current <= 0) {
-			CART.remove(part);
+			items.remove(item);
 		} else {
-			CART.put(part, current);
+			items.put(item, current);
+		}
+	}
+
+	public void add(Cart other) {
+		for (Entry<StoreItem, Integer> entry : other.items.entrySet()) {
+			StoreItem item = entry.getKey();
+			Integer amount = entry.getValue();
+			add(item, amount);
 		}
 	}
 

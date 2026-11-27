@@ -1,7 +1,7 @@
 package com.example.computerandfishstore.classes;
 
-import com.example.computerandfishstore.computer.utils.Validation;
-import com.example.computerandfishstore.computer.utils.ValidationResult;
+import com.example.computerandfishstore.utils.Validation;
+import com.example.computerandfishstore.utils.ValidationResult;
 
 import java.util.List;
 import java.util.Map;
@@ -66,6 +66,8 @@ public interface Buildable {
 	 */
 	interface Builder<T extends Buildable, C extends ComponentType<T>> {
 
+		String getTitle();
+
 		/**
 		 * @return All component types for the Buildable class.
 		 */
@@ -90,7 +92,7 @@ public interface Buildable {
 		 */
 		default Validation next() {
 			if (!canNext())
-				return new Validation(false, "The current component type has not been fulfilled yet.");
+				return new Validation(false, "The current item type has not been fulfilled yet.");
 			return selfNext();
 		}
 
@@ -178,9 +180,9 @@ public interface Buildable {
 		 */
 		default Validation add(Component<T> component, boolean next) {
 			if (!isCorrectType(component))
-				return new Validation(false, "Provided component is not of the current type being selected.");
+				return new Validation(false, "The provided item is not of the current type being selected.");
 			if (!hasRoom(1))
-				return new Validation(false, "This type of component has already reached the max number allowed.");
+				return new Validation(false, "This type of item has already reached the max number allowed.");
 			getData().get(getCurrentType()).add(component);
 			if (next)
 				next();
@@ -195,7 +197,7 @@ public interface Buildable {
 		 */
 		default Validation add(List<Component<T>> components, boolean next) {
 			if (!hasRoom(components.size()))
-				return new Validation(false, "The provided components go over the maximum amount allowed. None have been added.");
+				return new Validation(false, "The provided items go over the maximum amount allowed. None have been added.");
 			for (Component<T> component : components) {
 				Validation validation = add(component, false);
 				if (!validation.valid())
@@ -231,6 +233,8 @@ public interface Buildable {
 			return list.size() + with <= current.getMaximum();
 		}
 
+		List<String> getDetails();
+
 		/**
 		 * Finalizes this Builder.
 		 * Should never be called directly unless you know what you are doing.
@@ -247,9 +251,9 @@ public interface Buildable {
 			for (C type : getTypes()) {
 				int size = getData(type).size();
 				if (size < type.getMinimum()) {
-					return new ValidationResult<>(false, "One of the component types did not meet the minimum requirements.");
+					return new ValidationResult<>(false, "One of the item types did not meet the minimum requirements.");
 				} else if (size > type.getMaximum()) {
-					return new ValidationResult<>(false, "One of the component types has more components than the maximum limit.");
+					return new ValidationResult<>(false, "One of the item types has more components than the maximum limit.");
 				}
 			}
 			return selfBuild();

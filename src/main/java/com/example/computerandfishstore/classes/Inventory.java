@@ -4,7 +4,8 @@ import com.example.computerandfishstore.computer.classes.*;
 import com.example.computerandfishstore.computer.components.*;
 import com.example.computerandfishstore.computer.parts.*;
 import com.example.computerandfishstore.computer.parts.Rig.RigBuilder;
-import com.example.computerandfishstore.computer.utils.ValidationResult;
+import com.example.computerandfishstore.fish.TankWater;
+import com.example.computerandfishstore.utils.ValidationResult;
 import com.example.computerandfishstore.fish.Fish;
 import com.example.computerandfishstore.fish.FishTank;
 
@@ -118,24 +119,30 @@ public final class Inventory {
 		// Fish
 		//- Fish
 		INVENTORY.addAll(List.of(
-			new Fish("Golden Arowana", 5000, true, true, true, 100),
-			new Fish("Burmese Greenfish", 15, false, false, false, 2),
-			new Fish("Blue Sea Bass", 18, false, true, true, 10),
-			new Fish("Orange Sandshark", 2500, true, true, true, 500),
-			new Fish("Purple Mini Stingray", 150, false, false, false, 1),
-			new Fish("Goldfish", 5, false, false, false, 1),
-			new Fish("Brazilian Silver Pacu", 200, true, false, false, 50),
-			new Fish("European Teal Eel", 120, true, true, false, 100),
-			new Fish("Pink Nebula Beta", 20, false, false, false, 1)
+			new Fish("Golden Arowana", 5000, true, true, true, 100, "GOLDENAROWANA.png"),
+			new Fish("Burmese Greenfish", 15, false, false, false, 2, "BURMESEGREENFISH.png"),
+			new Fish("Blue Sea Bass", 18, false, true, true, 10, "BLUESEABASS.png"),
+			new Fish("Orange Sandshark", 2500, true, true, true, 500, "ORANGESANDSHARK.png"),
+			new Fish("Purple Mini Stingray", 150, false, false, false, 1, "PURPLEMINISTINGRAY.png"),
+			new Fish("Goldfish", 5, false, false, false, 1, "GOLDFISH.png"),
+			new Fish("Brazilian Silver Pacu", 200, true, false, false, 50, "BRAZILIANSILVERPACU.png"),
+			new Fish("European Teal Eel", 120, true, true, false, 100, "EUROPEANTEALEEL.png"),
+			new Fish("Pink Nebula Beta", 20, false, false, false, 1, "PINKNEBULABETA.png")
 		));
 
 		//- Tanks
 		INVENTORY.addAll(List.of(
-			new FishTank("Small Tank", 30, 10),
-			new FishTank("Medium Tank", 60, 50),
-			new FishTank("Large Tank", 200, 100),
-			new FishTank("Extra Large Tank", 800, 500),
-			new FishTank("Mega Tank", 3200, 2000)
+			new FishTank("Small Tank", 30, 10, "SMALLTANK.png"),
+			new FishTank("Medium Tank", 60, 50, "MEDIUMTANK.png"),
+			new FishTank("Large Tank", 200, 100, "LARGETANK.png"),
+			new FishTank("Extra Large Tank", 800, 500, "XLTANK.png"),
+			new FishTank("Mega Tank", 3200, 2000, "MEGATANK.png")
+		));
+
+		//- Water
+		INVENTORY.addAll(List.of(
+			new TankWater("Fresh Water", false),
+			new TankWater("Salt Water", true)
 		));
 	}
 

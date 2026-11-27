@@ -1,6 +1,5 @@
 package com.example.computerandfishstore;
 
-import com.example.computerandfishstore.fish.AquariumBuilder;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

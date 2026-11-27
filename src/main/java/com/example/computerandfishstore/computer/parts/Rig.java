@@ -5,8 +5,8 @@ import com.example.computerandfishstore.computer.classes.RigComponentType;
 import com.example.computerandfishstore.computer.classes.RigComponent;
 import com.example.computerandfishstore.computer.classes.ComputerPart;
 import com.example.computerandfishstore.computer.components.*;
-import com.example.computerandfishstore.computer.utils.Validation;
-import com.example.computerandfishstore.computer.utils.ValidationResult;
+import com.example.computerandfishstore.utils.Validation;
+import com.example.computerandfishstore.utils.ValidationResult;
 import javafx.scene.image.Image;
 
 import java.util.*;
@@ -155,6 +155,11 @@ public class Rig extends ComputerPart implements Buildable {
 		}
 
 		@Override
+		public String getTitle() {
+			return "Computer Builder";
+		}
+
+		@Override
 		public RigComponentType[] getTypes() {
 			return COMPONENT_TYPES;
 		}
@@ -231,6 +236,11 @@ public class Rig extends ComputerPart implements Buildable {
 				}
 				default -> true;
 			};
+		}
+
+		@Override
+		public List<String> getDetails() {
+			return List.of("Required Power: " + getSum(comp -> ((RigComponent) comp).getRequiredPower()));
 		}
 
 		@Override

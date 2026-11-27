@@ -5,12 +5,15 @@ import javafx.scene.image.Image;
 
 import java.util.List;
 
-public class Fish extends StoreItem {
+public class Fish extends AquariumComponent {
+
+	private static final AquariumComponentType COMPONENT_TYPE = AquariumComponentType.FISH;
 
 	private final double designatedGallons;
 	private final boolean large;
 	private final boolean carnivorous;
 	private final boolean saltwater;
+	private final Image image;
 
 	public Fish(
 		String name,
@@ -18,13 +21,15 @@ public class Fish extends StoreItem {
 		boolean large,
 		boolean carnivorous,
 		boolean saltwater,
-		double designatedGallons
+		double designatedGallons,
+		String image
 	) {
-		super(name, price);
+		super(name, price, COMPONENT_TYPE);
 		this.large = large;
 		this.carnivorous = carnivorous;
 		this.saltwater = saltwater;
 		this.designatedGallons = designatedGallons;
+		this.image = getImage(image);
 	}
 
 	public String getSize() {
@@ -40,16 +45,16 @@ public class Fish extends StoreItem {
 		return saltwater ? "Saltwater" : "Freshwater";
 	}
 
-	public boolean checkLarge(){
-		return this.large;
+	public boolean isLarge() {
+		return large;
 	}
 
-	public boolean checkCarnivorous(){
-		return this.carnivorous;
+	public boolean isCarnivorous() {
+		return carnivorous;
 	}
 
-	public boolean checkSaltwater(){
-		return this.saltwater;
+	public boolean isSaltwater() {
+		return saltwater;
 	}
 
 	public double getDesignatedGallons() {
@@ -58,7 +63,7 @@ public class Fish extends StoreItem {
 
 	@Override
 	public Image getImage() {
-		return null;
+		return image;
 	}
 
 	@Override

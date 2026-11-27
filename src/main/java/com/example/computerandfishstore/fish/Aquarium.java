@@ -2,6 +2,7 @@ package com.example.computerandfishstore.fish;
 
 import com.example.computerandfishstore.classes.Buildable;
 import com.example.computerandfishstore.classes.StoreItem;
+import com.example.computerandfishstore.computer.parts.Rig;
 import com.example.computerandfishstore.utils.Validation;
 import com.example.computerandfishstore.utils.ValidationResult;
 import javafx.scene.image.Image;
@@ -57,7 +58,7 @@ public class Aquarium extends StoreItem implements Buildable {
 	public List<String> getProperties() {
 		return List.of(
 			"Tank: " + tank.getName(),
-			"Fish: " + fishes
+			"Fish: " + combine(fishes, ", ")
 		);
 	}
 
@@ -154,11 +155,10 @@ public class Aquarium extends StoreItem implements Buildable {
 		}
 
 		@Override
-		public boolean selfFilter(Component<Aquarium> component) {
-			AquariumComponent aquariumComponent = (AquariumComponent) component;
+		public <E extends Component<Aquarium>> boolean selfFilter(E component) {
 			if (currentType == AquariumComponentType.FISH) { // Filters displayed Fish by checking against tank water and fish compatibility.
-				Fish currentFish = (Fish) aquariumComponent;
-				TankWater water = (TankWater) getSingle(AquariumComponentType.TANK_WATER);
+				Fish currentFish = (Fish) component;
+				TankWater water = getSingle(AquariumComponentType.TANK_WATER);
 				if (currentFish.isSaltwater() != water.isSaltwater())
 					return false;
 				double gallonsUsing = 0;
@@ -176,11 +176,10 @@ public class Aquarium extends StoreItem implements Buildable {
 
 		// Custom add, as BuilderMenu for Aquarium does not refresh fish everytime one is added.
 		@Override
-		public Validation add(Component<Aquarium> component, boolean next) {
-			AquariumComponent aquariumComponent = (AquariumComponent) component;
+		public <E extends Component<Aquarium>> Validation add(E component, boolean next) {
 			if (currentType == AquariumComponentType.FISH) {
-				Fish currentFish = (Fish) aquariumComponent;
-				TankWater water = (TankWater) getSingle(AquariumComponentType.TANK_WATER);
+				Fish currentFish = (Fish) component;
+				TankWater water =getSingle(AquariumComponentType.TANK_WATER);
 				if (currentFish.isSaltwater() != water.isSaltwater())
 					return new Validation(false, "A saltwater fish can not be added to a freshwater aquarium.");
 				double gallonsUsing = 0;
@@ -217,12 +216,12 @@ public class Aquarium extends StoreItem implements Buildable {
 
 		@Override
 		public ValidationResult<Aquarium> selfBuild() {
-			FishTank tank = (FishTank) getSingle(AquariumComponentType.TANK);
-			TankWater water = (TankWater) getSingle(AquariumComponentType.TANK_WATER);
+			FishTank tank = getSingle(AquariumComponentType.TANK);
+			TankWater water = getSingle(AquariumComponentType.TANK_WATER);
 			double gallonsUsing = 0;
 			boolean hasCarnivores = false;
 			boolean hasHerbivores = false;
-			List<Fish> fishes = getData(AquariumComponentType.FISH).stream().map(comp -> (Fish) comp).toList();
+			List<Fish> fishes = getData(AquariumComponentType.FISH);
 			for (Fish fish : fishes) {
 				gallonsUsing += fish.getDesignatedGallons();
 				if (water.isSaltwater() != fish.isSaltwater()) // Ensures fish are compatible with the water.

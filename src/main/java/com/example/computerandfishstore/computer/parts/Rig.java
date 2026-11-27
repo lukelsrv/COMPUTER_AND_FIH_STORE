@@ -118,9 +118,9 @@ public class Rig extends ComputerPart implements Buildable {
 		return List.of(
 			"Motherboard: " + motherboard.getName(),
 			"CPU: " + cpu.getName(),
-			"RAM: " + rams,
+			"RAM: " + combine(rams, ", "),
 			"GPU: " + gpu.getName(),
-			"Storages: " + storages,
+			"Storages: " + combine(storages, ", "),
 			"CPU Cooler: " + cpuCooler.getName(),
 			"Power Supply: " + powerSupply.getName()
 		);
@@ -219,19 +219,18 @@ public class Rig extends ComputerPart implements Buildable {
 		}
 
 		@Override
-		public boolean selfFilter(Component<Rig> component) {
-			RigComponent compComponent = (RigComponent) component;
+		public <E extends Component<Rig>> boolean selfFilter(E component) {
 			return switch (currentType) {
 				case CPU -> { // Filters displayed CPUs by checking the brand types the selected Motherboard offers.
-					CPU cpu = (CPU) compComponent;
+					CPU cpu = (CPU) component;
 					yield ((Motherboard) getSingle(RigComponentType.MOTHERBOARD)).getSupportedBrands().stream().anyMatch(cpu::supports);
 				}
 				case RAM -> { // Filters displayed RAM by checking the DDR type of the RAM and Motherboard are the same.
-					RAM ram = (RAM) compComponent;
+					RAM ram = (RAM) component;
 					yield ((Motherboard) getSingle(RigComponentType.MOTHERBOARD)).getRamDDR() == ram.getRamDDR();
 				}
 				case POWER_SUPPLY -> { // Filters displayed PowerSupplys by checking the supplied power meets the total required power minimum.
-					PowerSupply powerSupply = (PowerSupply) compComponent;
+					PowerSupply powerSupply = (PowerSupply) component;
 					yield powerSupply.getSuppliedPower() >= getSum(rigComponent -> ((RigComponent) rigComponent).getRequiredPower());
 				}
 				default -> true;
@@ -246,24 +245,24 @@ public class Rig extends ComputerPart implements Buildable {
 		@Override
 		public ValidationResult<Rig> selfBuild() {
 			// Ensures the brand type of the selected CPU is supported by the selected Motherboard.
-			Motherboard motherboard = (Motherboard) getSingle(RigComponentType.MOTHERBOARD);
-			CPU cpu = (CPU) getSingle(RigComponentType.CPU);
+			Motherboard motherboard = getSingle(RigComponentType.MOTHERBOARD);
+			CPU cpu = getSingle(RigComponentType.CPU);
 			if (motherboard.getSupportedBrands().stream().noneMatch(cpu::supports))
 				return new ValidationResult<>(false, "The selected CPU is not supported by the selected Motherboard.");
 
 			// Ensures the DDR type of all the selected RAM matches the DDR type of the Motherboard.
-			List<RAM> rams = getData(RigComponentType.RAM).stream().map(comp -> (RAM) comp).toList();
+			List<RAM> rams = getData(RigComponentType.RAM);
 			if (rams.stream().anyMatch(ram -> ram.getRamDDR() != motherboard.getRamDDR()))
 				return new ValidationResult<>(false, "One of the selected RAM is not supported by the selected Motherboard.");
 
 			// Ensures the selected Power Supply supplies enough power to all of selected components that require power.
-			PowerSupply powerSupply = (PowerSupply) getSingle(RigComponentType.POWER_SUPPLY);
+			PowerSupply powerSupply = getSingle(RigComponentType.POWER_SUPPLY);
 			if (powerSupply.getSuppliedPower() < getSum(rigComponent -> ((RigComponent) rigComponent).getRequiredPower()))
 				return new ValidationResult<>(false, "The selected power supply can not support all the components selected.");
 
-			GPU gpu = (GPU) getSingle(RigComponentType.GPU);
+			GPU gpu = getSingle(RigComponentType.GPU);
 			List<Storage> storages = getData(RigComponentType.STORAGE).stream().map(comp -> (Storage) comp).toList();
-			CPUCooler cpuCooler = (CPUCooler) getSingle(RigComponentType.CPU_COOLER);
+			CPUCooler cpuCooler = getSingle(RigComponentType.CPU_COOLER);
 			double price = getSum(rigComponent -> ((RigComponent) rigComponent).getPrice());
 
 			Rig rig = new Rig(name, price, motherboard, cpu, rams, gpu, storages, cpuCooler, powerSupply);

@@ -19,6 +19,22 @@ public abstract class StoreItem {
 		return new Image(MainMenu.class.getResource("Images/" + fileName).toExternalForm());
 	}
 
+	/**
+	 * Helper method for combining a list of store items into 1 string by their name and with the provided delimeter.
+	 * @param items The items to combine the names of into one string.
+	 * @param delimiter The delimiter to separate with.
+	 * @return The combined string.
+	 */
+	protected static String combine(List<? extends StoreItem> items, String delimiter) {
+		if (items.isEmpty())
+			return "";
+		String string = items.get(0).getName();
+		for (int i = 1; i < items.size(); i++) {
+			string += delimiter + items.get(i).getName();
+		}
+		return string;
+	}
+
 	private final String name;
 	private final double price;
 

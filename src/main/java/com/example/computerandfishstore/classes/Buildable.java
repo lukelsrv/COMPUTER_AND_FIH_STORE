@@ -140,8 +140,9 @@ public interface Buildable {
 		 * @param type The component type to get the components for.
 		 * @return The current components.
 		 */
-		default List<Component<T>> getData(C type) {
-			return getData().get(type);
+		default <E extends Component<T>> List<E> getData(C type) {
+			//noinspection unchecked
+			return (List<E>) getData().get(type);
 		}
 
 		/**
@@ -149,10 +150,10 @@ public interface Buildable {
 		 * @param type The component type to get the component for.
 		 * @return The component, otherwise {@code null} if not selected yet or is not single.
 		 */
-		default Component<T> getSingle(C type) {
+		default <E extends Component<T>> E getSingle(C type) {
 			if (!type.isSingle())
 				return null;
-			List<Component<T>> list = getData(type);
+			List<E> list = getData(type);
 			if (list.isEmpty())
 				return null;
 			return list.get(0);
@@ -180,7 +181,7 @@ public interface Buildable {
 		 * @param component The component to check.
 		 * @return {@code true} if the component can be selected, otherwise {@code false}.
 		 */
-		boolean selfFilter(Component<T> component);
+		<E extends Component<T>> boolean selfFilter(E component);
 
 		/**
 		 * Whether the provided component is allowed to be selected.
@@ -188,7 +189,7 @@ public interface Buildable {
 		 * @param component The component to check.
 		 * @return {@code true} if the component can be selected, otherwise {@code false}.
 		 */
-		default boolean filter(Component<T> component) {
+		default <E extends Component<T>> boolean filter(E component) {
 			if (!isCorrectType(component))
 				return false;
 			return selfFilter(component);
@@ -200,7 +201,7 @@ public interface Buildable {
 		 * @param next Whether after adding this component, if the Builder should move on to the next component type to be customized.
 		 * @return A Validation object on its success or not.
 		 */
-		default Validation add(Component<T> component, boolean next) {
+		default <E extends Component<T>> Validation add(E component, boolean next) {
 			if (!isCorrectType(component))
 				return new Validation(false, "The provided item is not of the current type being selected.");
 			if (!hasRoom(1))
@@ -217,7 +218,7 @@ public interface Buildable {
 		 * @param next Whether after adding the components, if the Builder should move on to the next component type to be customized.
 		 * @return A Validation object on the success of all components are not.
 		 */
-		default Validation add(List<? extends Component<T>> components, boolean next) {
+		default <E extends Component<T>> Validation add(List<E> components, boolean next) {
 			if (!hasRoom(components.size()))
 				return new Validation(false, "The provided items go over the maximum amount allowed. None have been added.");
 			for (Component<T> component : components) {
@@ -235,7 +236,7 @@ public interface Buildable {
 		 * @param component The component to remove.
 		 * @return {@code true} if the component was found and removed, otherwise {@code false}.
 		 */
-		default boolean remove(Component<T> component) {
+		default <E extends Component<T>> boolean remove(E component) {
 			return getData(getCurrentType()).remove(component);
 		}
 
@@ -244,7 +245,7 @@ public interface Buildable {
 		 * @param component The component to check.
 		 * @return {@code true} if the component is of the correct type, otherwise {@code false}.
 		 */
-		default boolean isCorrectType(Component<T> component) {
+		default <E extends Component<T>> boolean isCorrectType(E component) {
 			C current = getCurrentType();
 			return current.getComponentClass().isInstance(component);
 		}

@@ -181,7 +181,7 @@ public class Rig extends ComputerPart implements Buildable {
 			}
 			currentType = COMPONENT_TYPES[currentIndex];
 			List<Component<Rig>> components = getData(currentType);
-			if (!components.isEmpty()) {
+			if (!components.isEmpty()) { // This component type already has components, remove ones that don't fit anymore.
 				for (Component<Rig> component : components) {
 					if (!filter(component))
 						components.remove(component);

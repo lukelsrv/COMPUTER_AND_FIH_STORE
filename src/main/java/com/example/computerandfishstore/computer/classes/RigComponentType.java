@@ -4,6 +4,9 @@ import com.example.computerandfishstore.classes.Buildable.ComponentType;
 import com.example.computerandfishstore.computer.components.*;
 import com.example.computerandfishstore.computer.parts.Rig;
 
+/**
+ * Component types that make up a Rig.
+ */
 public enum RigComponentType implements ComponentType<Rig> {
 
 	MOTHERBOARD(Motherboard.class, 1),
@@ -18,10 +21,21 @@ public enum RigComponentType implements ComponentType<Rig> {
 	private final int minimum;
 	private final int maximum;
 
+	/**
+	 * Constructs a new RigComponentType.
+	 * @param componentClass The class of the RigComponent associated with this RigComponentType.
+	 * @param amount The amount of RigComponents for this RigComponentType requires to have to build a Rig.
+	 */
 	RigComponentType(Class<? extends RigComponent> componentClass, int amount) {
 		this(componentClass, amount, amount);
 	}
 
+	/**
+	 * Constructs a new RigComponentType.
+	 * @param componentClass The class of the RigComponent associated with this RigComponentType.
+	 * @param minimum The minimum amount of RigComponents for this RigComponentType requires to have to build a Rig.
+	 * @param maximum The maximum amount of RigComponents for this RigComponentType requires to have to build a Rig.
+	 */
 	RigComponentType(Class<? extends RigComponent> componentClass, int minimum, int maximum) {
 		this.componentClass = componentClass;
 		this.minimum = minimum;

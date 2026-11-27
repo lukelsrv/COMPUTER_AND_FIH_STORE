@@ -55,6 +55,9 @@ public interface Buildable {
 	 */
 	interface Component<T extends Buildable> {
 
+		/**
+		 * @return The component type associated with this component.
+		 */
 		ComponentType<T> getComponentType();
 
 	}
@@ -66,6 +69,9 @@ public interface Buildable {
 	 */
 	interface Builder<T extends Buildable, C extends ComponentType<T>> {
 
+		/**
+		 * @return The title of this builder. Used for BuilderMenu,
+		 */
 		String getTitle();
 
 		/**
@@ -79,14 +85,16 @@ public interface Buildable {
 		C getCurrentType();
 
 		/**
-		 * State that the current component type is done being customized and to move on to the next.
+		 * Goes to the next component to be customized.
+		 * Stops at the last component type.
 		 * Should never be called directly unless you know what you are doing.
 		 * @return A Validation object on its success or not.
 		 */
 		Validation selfNext();
 
 		/**
-		 * State that the current component type is done being customized and to move on to the next.
+		 * Goes to the next component to be customized.
+		 * Stops at the last component type.
 		 * General handler before being directed to {@link #selfNext()}.
 		 * @return A Validation object on its success or not.
 		 */
@@ -96,16 +104,30 @@ public interface Buildable {
 			return selfNext();
 		}
 
+		/**
+		 * @return Whether the current component has met its requirements before going to next component.
+		 */
 		default boolean canNext() {
 			C current = getCurrentType();
 			// Ensure the number of components for the current component type has fulfilled the minimum requirement.
 			return getData(current).size() >= current.getMinimum();
 		}
 
+		/**
+		 * Goes to the previous component being customized.
+		 * Stops at the first component type.
+		 * @return A Validation object on its success or not.
+		 */
 		Validation prev();
 
+		/**
+		 * @return Whether the current component type is the last one.
+		 */
 		boolean isEnd();
 
+		/**
+		 * @return Whether the current component type is the first one.
+		 */
 		boolean isStart();
 
 		/**
@@ -195,7 +217,7 @@ public interface Buildable {
 		 * @param next Whether after adding the components, if the Builder should move on to the next component type to be customized.
 		 * @return A Validation object on the success of all components are not.
 		 */
-		default Validation add(List<Component<T>> components, boolean next) {
+		default Validation add(List<? extends Component<T>> components, boolean next) {
 			if (!hasRoom(components.size()))
 				return new Validation(false, "The provided items go over the maximum amount allowed. None have been added.");
 			for (Component<T> component : components) {
@@ -208,6 +230,11 @@ public interface Buildable {
 			return new Validation(true);
 		}
 
+		/**
+		 * Removes the provided component from the build.
+		 * @param component The component to remove.
+		 * @return {@code true} if the component was found and removed, otherwise {@code false}.
+		 */
 		default boolean remove(Component<T> component) {
 			return getData(getCurrentType()).remove(component);
 		}
@@ -233,6 +260,9 @@ public interface Buildable {
 			return list.size() + with <= current.getMaximum();
 		}
 
+		/**
+		 * @return Additional details to be displayed in BuilderMenu.
+		 */
 		List<String> getDetails();
 
 		/**

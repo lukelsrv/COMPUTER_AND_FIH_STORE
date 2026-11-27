@@ -1,10 +1,8 @@
 package com.example.computerandfishstore;
 
-import com.example.computerandfishstore.classes.Buildable.Component;
 import com.example.computerandfishstore.classes.Cart;
 import com.example.computerandfishstore.classes.Inventory;
 import com.example.computerandfishstore.classes.StoreItem;
-import com.example.computerandfishstore.utils.Validation;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -19,8 +17,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.List;
 
+/**
+ * Controller class for the ShopMenu.
+ */
 public class ShopMenuController {
 
 	@FXML
@@ -43,6 +43,9 @@ public class ShopMenuController {
 
 	private Cart cart;
 
+	/**
+	 * Initializes this controller by updating menu aspects and adding handlers to buttons.
+	 */
 	@FXML
 	public void initialize() {
 		cart = new Cart();
@@ -56,6 +59,9 @@ public class ShopMenuController {
 		cancelButton.setOnAction(event -> toMainMenu());
 	}
 
+	/**
+	 * Helper method to go back to main menu.
+	 */
 	private void toMainMenu() {
 		try {
 			FXMLLoader loader = new FXMLLoader(MainMenu.class.getResource("MainMenu.fxml"));
@@ -66,9 +72,14 @@ public class ShopMenuController {
 		} catch (IOException e) {}
 	}
 
+	/**
+	 * Helper method to update the items listed in the Menu.
+	 */
 	private void updateInventory() {
+		// Remove previous items.
 		itemGrid.getChildren().clear();
 		int count = 0;
+		// Retrieve items to display.
 		for (StoreItem item : Inventory.getInventory()) {
 			VBox card = createItemCard(item);
 			int column = count % 2;
@@ -78,16 +89,27 @@ public class ShopMenuController {
 		}
 	}
 
+	/**
+	 * Helper method to update the items in the build.
+	 */
 	private void updateCart() {
 		cartTextArea.setText(cart.getItemsDisplay());
 		updateDetails();
 	}
 
+	/**
+	 * Helper method to update the details of the cart.
+	 */
 	private void updateDetails() {
 		String text = "Additional Details:\n- Total Cost: $" + String.format("%,.2f", cart.getTotalCost());
 		detailsTextArea.setText(text);
 	}
 
+	/**
+	 * Helper method to create JavaFX objects to display the necessary information on the Menu.
+	 * @param storeItem The store item to display the data of.
+	 * @return The JavaFX container to display in the Menu.
+	 */
 	private VBox createItemCard(StoreItem storeItem) {
 		VBox card = new VBox(10);
 		card.setAlignment(Pos.TOP_CENTER);

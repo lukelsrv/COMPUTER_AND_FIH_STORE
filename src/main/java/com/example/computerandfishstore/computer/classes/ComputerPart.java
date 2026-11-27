@@ -1,10 +1,6 @@
 package com.example.computerandfishstore.computer.classes;
 
-import com.example.computerandfishstore.MainMenu;
 import com.example.computerandfishstore.classes.StoreItem;
-import javafx.scene.image.Image;
-
-import java.util.List;
 
 /**
  * Typed class for Computer Parts.
@@ -19,7 +15,5 @@ public abstract class ComputerPart extends StoreItem {
 	public ComputerPart(String name, double price) {
 		super(name, price);
 	}
-
-
 
 }

@@ -1,15 +1,7 @@
 package com.example.computerandfishstore.fish;
 
 import com.example.computerandfishstore.classes.Buildable;
-import com.example.computerandfishstore.classes.Buildable.Component;
 import com.example.computerandfishstore.classes.StoreItem;
-import com.example.computerandfishstore.computer.classes.RigComponent;
-import com.example.computerandfishstore.computer.classes.RigComponentType;
-import com.example.computerandfishstore.computer.components.CPU;
-import com.example.computerandfishstore.computer.components.Motherboard;
-import com.example.computerandfishstore.computer.components.PowerSupply;
-import com.example.computerandfishstore.computer.components.RAM;
-import com.example.computerandfishstore.computer.parts.Rig;
 import com.example.computerandfishstore.utils.Validation;
 import com.example.computerandfishstore.utils.ValidationResult;
 import javafx.scene.image.Image;
@@ -19,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Typed class for Aquariums.
+ */
 public class Aquarium extends StoreItem implements Buildable {
 
 	private static final Image IMAGE = getImage("");
@@ -26,16 +21,29 @@ public class Aquarium extends StoreItem implements Buildable {
 	private final FishTank tank;
 	private final List<Fish> fishes;
 
+	/**
+	 * Constructs a new Aquarium.
+	 * @param name The name of this Aquarium.
+	 * @param price The price of this Aquarium.
+	 * @param tank The tank of this Aquarium.
+	 * @param fishes The fish of this Aquarium.
+	 */
 	public Aquarium(String name, double price, FishTank tank, List<Fish> fishes) {
 		super(name, price);
 		this.tank = tank;
 		this.fishes = fishes;
 	}
 
+	/**
+	 * @return The tank of this Aquarium.
+	 */
 	public FishTank getTank() {
 		return tank;
 	}
 
+	/**
+	 * @return The fish of this Aquarium.
+	 */
 	public List<Fish> getFishes() {
 		return fishes;
 	}
@@ -53,6 +61,9 @@ public class Aquarium extends StoreItem implements Buildable {
 		);
 	}
 
+	/**
+	 * Builder class for customizing components of an {@link Aquarium} before finalization.
+	 */
 	public static class AquariumBuilder implements Builder<Aquarium, AquariumComponentType> {
 
 		private static final AquariumComponentType[] COMPONENT_TYPES = AquariumComponentType.values();
@@ -62,11 +73,18 @@ public class Aquarium extends StoreItem implements Buildable {
 		private AquariumComponentType currentType = COMPONENT_TYPES[0];
 		private String name = "Custom Aquarium";
 
+		/**
+		 * Constructs a new AquariumBuilder.
+		 */
 		public AquariumBuilder() {
 			for (AquariumComponentType type : COMPONENT_TYPES)
 				data.put(type, new ArrayList<>());
 		}
 
+		/**
+		 * Sets the name the finalized Aquarium will have.
+		 * @param name The name of the Aquarium.
+		 */
 		public void setName(String name) {
 			this.name = name;
 		}
@@ -98,7 +116,7 @@ public class Aquarium extends StoreItem implements Buildable {
 			}
 			currentType = COMPONENT_TYPES[currentIndex];
 			List<Component<Aquarium>> components = getData(currentType);
-			if (!components.isEmpty()) {
+			if (!components.isEmpty()) { // This component type already has components, remove ones that don't fit anymore.
 				for (Component<Aquarium> component : components) {
 					if (!filter(component))
 						components.remove(component);
@@ -138,7 +156,7 @@ public class Aquarium extends StoreItem implements Buildable {
 		@Override
 		public boolean selfFilter(Component<Aquarium> component) {
 			AquariumComponent aquariumComponent = (AquariumComponent) component;
-			if (currentType == AquariumComponentType.FISH) {
+			if (currentType == AquariumComponentType.FISH) { // Filters displayed Fish by checking against tank water and fish compatibility.
 				Fish currentFish = (Fish) aquariumComponent;
 				TankWater water = (TankWater) getSingle(AquariumComponentType.TANK_WATER);
 				if (currentFish.isSaltwater() != water.isSaltwater())
@@ -156,6 +174,7 @@ public class Aquarium extends StoreItem implements Buildable {
 			return true;
 		}
 
+		// Custom add, as BuilderMenu for Aquarium does not refresh fish everytime one is added.
 		@Override
 		public Validation add(Component<Aquarium> component, boolean next) {
 			AquariumComponent aquariumComponent = (AquariumComponent) component;
@@ -199,12 +218,16 @@ public class Aquarium extends StoreItem implements Buildable {
 		@Override
 		public ValidationResult<Aquarium> selfBuild() {
 			FishTank tank = (FishTank) getSingle(AquariumComponentType.TANK);
+			TankWater water = (TankWater) getSingle(AquariumComponentType.TANK_WATER);
 			double gallonsUsing = 0;
 			boolean hasCarnivores = false;
 			boolean hasHerbivores = false;
 			List<Fish> fishes = getData(AquariumComponentType.FISH).stream().map(comp -> (Fish) comp).toList();
 			for (Fish fish : fishes) {
 				gallonsUsing += fish.getDesignatedGallons();
+				if (water.isSaltwater() != fish.isSaltwater()) // Ensures fish are compatible with the water.
+					return new ValidationResult<>(false, "One or more of the selected fish can not live in the water.");
+				// Ensures fish are compatible with each other.
 				if (fish.isCarnivorous()) {
 					if (hasHerbivores)
 						return new ValidationResult<>(false, "Cannot have carnivorous and non-carnivorous fish in the same tank.");
@@ -215,7 +238,7 @@ public class Aquarium extends StoreItem implements Buildable {
 					hasHerbivores = true;
 				}
 			}
-			if (gallonsUsing > tank.getGallons())
+			if (gallonsUsing > tank.getGallons()) // Ensures the tank can support all the fish.
 				return new ValidationResult<>(false, "The selected tank does not provide enough room for all the selected fish.");
 			double price = getSum(comp -> ((AquariumComponent) comp).getPrice());
 			Aquarium aquarium = new Aquarium(name, price, tank, fishes);

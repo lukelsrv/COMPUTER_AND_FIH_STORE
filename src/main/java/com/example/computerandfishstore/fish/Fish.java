@@ -1,10 +1,12 @@
 package com.example.computerandfishstore.fish;
 
-import com.example.computerandfishstore.classes.StoreItem;
 import javafx.scene.image.Image;
 
 import java.util.List;
 
+/**
+ * Typed class for Fish.
+ */
 public class Fish extends AquariumComponent {
 
 	private static final AquariumComponentType COMPONENT_TYPE = AquariumComponentType.FISH;
@@ -15,6 +17,16 @@ public class Fish extends AquariumComponent {
 	private final boolean saltwater;
 	private final Image image;
 
+	/**
+	 * Constructs a new Fish.
+	 * @param name The name of this Fish.
+	 * @param price The price of this Fish.
+	 * @param large Whether this Fish is large.
+	 * @param carnivorous Whether this Fish is carnivorous.
+	 * @param saltwater Whether this fish requires saltwater.
+	 * @param designatedGallons The gallons needed for this Fish.
+	 * @param image The image of this Fish.
+	 */
 	public Fish(
 		String name,
 		double price,
@@ -32,31 +44,30 @@ public class Fish extends AquariumComponent {
 		this.image = getImage(image);
 	}
 
-	public String getSize() {
-		return large ? "Large" : "Small";
-	}
-
-	public String getDiet(){
-		//carnivorous fish are incompatible with small fish and cannot be in the same tank
-		return carnivorous ? "Carnivorous" : "Herbivore";
-	}
-
-	public String getWaterType(){
-		return saltwater ? "Saltwater" : "Freshwater";
-	}
-
+	/**
+	 * @return Whether this Fish is large.
+	 */
 	public boolean isLarge() {
 		return large;
 	}
 
+	/**
+	 * @return Whether this Fish is carnivorous.
+	 */
 	public boolean isCarnivorous() {
 		return carnivorous;
 	}
 
+	/**
+	 * @return Whether this Fish requires saltwater.
+	 */
 	public boolean isSaltwater() {
 		return saltwater;
 	}
 
+	/**
+	 * @return The gallons needed for this Fish.
+	 */
 	public double getDesignatedGallons() {
 		return this.designatedGallons;
 	}
@@ -64,6 +75,27 @@ public class Fish extends AquariumComponent {
 	@Override
 	public Image getImage() {
 		return image;
+	}
+
+	/**
+	 * @return The displayed size of this Fish.
+	 */
+	public String getSize() {
+		return large ? "Large" : "Small";
+	}
+
+	/**
+	 * @return The displayed diet of this Fish.
+	 */
+	public String getDiet(){
+		return carnivorous ? "Carnivorous" : "Herbivore";
+	}
+
+	/**
+	 * @return The displayed water type of this Fish.
+	 */
+	public String getWaterType(){
+		return saltwater ? "Saltwater" : "Freshwater";
 	}
 
 	@Override

@@ -24,9 +24,6 @@ public abstract class RigComponent extends ComputerPart implements Component<Rig
 		this.requiredPower = requiredPower;
 	}
 
-	/**
-	 * @return The type of this RigComponent.
-	 */
 	@Override
 	public RigComponentType getComponentType() {
 		return componentType;

@@ -7,6 +7,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Class to open the MainMenu.
+ */
 public class MainMenu extends Application {
 
 	@Override

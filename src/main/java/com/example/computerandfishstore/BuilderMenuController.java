@@ -26,6 +26,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Controller class for the BuilderMenu.
+ */
 public class BuilderMenuController<B extends Buildable, C extends ComponentType<B>> {
 
 	@FXML
@@ -53,6 +56,10 @@ public class BuilderMenuController<B extends Buildable, C extends ComponentType<
 	private RadioButton currentItemSelector;
 	private Component<B> currentItemSelected;
 
+	/**
+	 * Initializes this controller by updating menu aspects and adding handlers to buttons.
+	 * @param builder The builder used with the menu to display components and build the final item.
+	 */
 	public void init(Builder<B, C> builder) {
 		this.builder = builder;
 		titleLabel.setText(builder.getTitle());
@@ -60,9 +67,9 @@ public class BuilderMenuController<B extends Buildable, C extends ComponentType<
 		updateInventory();
 
 		nextButton.setOnAction(event -> {
-			if (!builder.canNext())
+			if (!builder.canNext()) // Safety check, button shouldn't be visible if it can't go next.
 				return;
-			if (builder.isEnd()) {
+			if (builder.isEnd()) { // Builder is at last component, finalize, add to main cart, back to main menu.
 				ValidationResult<B> result = builder.build();
 				if (!result.valid()) {
 					displayError(result.message());
@@ -71,21 +78,24 @@ public class BuilderMenuController<B extends Buildable, C extends ComponentType<
 					MainMenuController.CART.add((StoreItem) b);
 					toMainMenu();
 				}
-			} else {
+			} else { // Builder not done, move to next component to customize.
 				builder.next();
 				updateInventory();
 			}
 		});
 		backButton.setOnAction(event -> {
-			if (builder.isStart()) {
+			if (builder.isStart()) { // Builder at first component, go to main menu.
 				toMainMenu();
-			} else {
+			} else { // Otherwise, go back and edit components.
 				builder.prev();
 				updateInventory();
 			}
 		});
 	}
 
+	/**
+	 * Helper method to go back to main menu.
+	 */
 	private void toMainMenu() {
 		try {
 			FXMLLoader loader = new FXMLLoader(MainMenu.class.getResource("MainMenu.fxml"));
@@ -96,33 +106,41 @@ public class BuilderMenuController<B extends Buildable, C extends ComponentType<
 		} catch (IOException e) {}
 	}
 
+	/**
+	 * Helper method to update the next and back buttons.
+	 */
 	private void updateButtons() {
-		nextButton.setVisible(builder.canNext());
-		if (builder.isEnd()) {
+		nextButton.setVisible(builder.canNext()); // Don't allows going to next component if current is not satisfied.
+		if (builder.isEnd()) { // Builder is at last component
 			nextButton.setText("Finish");
 		} else {
 			nextButton.setText("Next");
 		}
-		if (builder.isStart()) {
+		if (builder.isStart()) { // Builder is at first component
 			backButton.setText("Menu");
 		} else {
 			backButton.setText("Back");
 		}
 	}
 
+	/**
+	 * Helper method to update the items listed in the Menu.
+	 */
 	private void updateInventory() {
+		// Remove previous items.
 		itemGrid.getChildren().clear();
 		updateButtons();
+		// Retrieve items to display.
 		C componentType = builder.getCurrentType();
 		Class<? extends Component<B>> componentClass = componentType.getComponentClass();
 		List<? extends Component<B>> items = Inventory.getInventory(componentClass);
 		Component<B> selected = null;
-		if (componentType.isSingle()) {
+		if (componentType.isSingle()) { // If this component already has an associated item.
 			selected = builder.getSingle(componentType);
 		}
 		int count = 0;
 		for (Component<B> item : items) {
-			if (!builder.filter(item))
+			if (!builder.filter(item)) // Filter out items that can't be displayed due to incompatibility.
 				continue;
 			VBox card = createItemCard(item, item == selected);
 			int column = count % 2;
@@ -132,6 +150,9 @@ public class BuilderMenuController<B extends Buildable, C extends ComponentType<
 		}
 	}
 
+	/**
+	 * Helper method to update the items in the build.
+	 */
 	private void updateCart() {
 		String text = "Current Build:\n";
 
@@ -158,6 +179,9 @@ public class BuilderMenuController<B extends Buildable, C extends ComponentType<
 		updateButtons();
 	}
 
+	/**
+	 * Helper method to update the details of the build.
+	 */
 	private void updateDetails() {
 		String text = "Additional Details:\n- Total Cost: $"
 			+ String.format("%,.2f", builder.getSum(rigComponent -> ((StoreItem) rigComponent).getPrice()));
@@ -166,10 +190,20 @@ public class BuilderMenuController<B extends Buildable, C extends ComponentType<
 		detailsTextArea.setText(text);
 	}
 
+	/**
+	 * Helper method to display the provided error in the menu.
+	 * @param error The error to display.
+	 */
 	private void displayError(String error) {
 		errorsTextArea.setText(error);
 	}
 
+	/**
+	 * Helper method to create JavaFX objects to display the necessary information on the Menu.
+	 * @param component The component to display the data of.
+	 * @param selected Whether this component has already been selected.
+	 * @return The JavaFX container to display in the Menu.
+	 */
 	private VBox createItemCard(Component<B> component, boolean selected) {
 		StoreItem storeItem = (StoreItem) component;
 		VBox card = new VBox(10);
@@ -205,9 +239,9 @@ public class BuilderMenuController<B extends Buildable, C extends ComponentType<
 		}
 
 		HBox buttons;
-		if (component.getComponentType().isSingle()) {
+		if (component.getComponentType().isSingle()) { // Single type, have RadioButtons instead of minus and plus buttons.
 			RadioButton selectButton = new RadioButton("Select");
-			if (selected) {
+			if (selected) { // This item is already selected, set necessary data
 				selectButton.fire();
 				currentItemSelector = selectButton;
 				currentItemSelected = component;
@@ -217,7 +251,7 @@ public class BuilderMenuController<B extends Buildable, C extends ComponentType<
 			});
 			buttons = new HBox(selectButton);
 			buttons.setPadding(new Insets(30, 0, 10, 80));
-		} else {
+		} else { // Multiple type, have minus and plus buttons.
 			Button minusButton = new Button("-");
 			minusButton.setPrefSize(26, 25);
 			minusButton.setOnAction(event -> {
@@ -237,7 +271,13 @@ public class BuilderMenuController<B extends Buildable, C extends ComponentType<
 		return card;
 	}
 
+	/**
+	 * Helper method for selecting a component. Used for single type components.
+	 * @param button The button that was clicked.
+	 * @param component The associated component being selected.
+	 */
 	private void selectComponent(RadioButton button, Component<B> component) {
+		// Something else was selected, we can only have 1, deselect the other component
 		if (currentItemSelected != null && currentItemSelector.isSelected()) {
 			currentItemSelector.fire();
 			builder.remove(currentItemSelected);
@@ -248,6 +288,10 @@ public class BuilderMenuController<B extends Buildable, C extends ComponentType<
 		updateCart();
 	}
 
+	/**
+	 * Helper method for adding a component. Used for multiple type components.
+	 * @param component The component to add.
+	 */
 	private void addComponent(Component<B> component) {
 		Validation validation = builder.add(component, false);
 		if (!validation.valid()) {
@@ -257,6 +301,10 @@ public class BuilderMenuController<B extends Buildable, C extends ComponentType<
 		}
 	}
 
+	/**
+	 * Helper method for removing a component. Used for multiple type components.
+	 * @param component The component to remove.
+	 */
 	private void removeComponent(Component<B> component) {
 		builder.remove(component);
 		updateCart();

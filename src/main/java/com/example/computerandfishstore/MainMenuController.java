@@ -16,6 +16,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Controller class for MainMenu.
+ */
 public class MainMenuController {
 
 	public static final Cart CART = new Cart();
@@ -37,11 +40,10 @@ public class MainMenuController {
 	@FXML
 	private TextArea TotalAndContentsTextArea;
 
-	@FXML
 	/**
-	 * Method for initializing the main menu to its default state
-	 * Contains the controls for the buttons
+	 * Initializes this controller by displaying cart on the menu and adding handlers to buttons.
 	 */
+	@FXML
 	public void initialize() {
 		displayCart();
 
@@ -55,6 +57,9 @@ public class MainMenuController {
 
 	}
 
+	/**
+	 * Helper method to open the ShopMenu.
+	 */
 	private void toShop() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("ShopMenu.fxml"));
 		Parent root;
@@ -68,6 +73,10 @@ public class MainMenuController {
 		stage.show();
 	}
 
+	/**
+	 * Helper method to open the BuilderMenu.
+	 * @param builder The builder to use in the BuilderMenuController.
+	 */
 	private <B extends Buildable, C extends ComponentType<B>> void toBuilder(Builder<B, C> builder) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("BuilderMenu.fxml"));
 		Parent root;
@@ -84,7 +93,7 @@ public class MainMenuController {
 	}
 
 	/**
-	 * method to display the cart, is called in the aquarium builder controller
+	 * Helper method to display/update the cart on the main menu.
 	 */
 	public void displayCart() {
 		TotalAndContentsTextArea.setText(CART.getDisplay());

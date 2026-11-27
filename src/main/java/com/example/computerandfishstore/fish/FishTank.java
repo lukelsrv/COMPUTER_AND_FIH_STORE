@@ -1,10 +1,12 @@
 package com.example.computerandfishstore.fish;
 
-import com.example.computerandfishstore.classes.StoreItem;
 import javafx.scene.image.Image;
 
 import java.util.List;
 
+/**
+ * Typed class for FishTanks.
+ */
 public class FishTank extends AquariumComponent {
 
 	private static final AquariumComponentType COMPONENT_TYPE = AquariumComponentType.TANK;
@@ -12,6 +14,13 @@ public class FishTank extends AquariumComponent {
 	private final double gallons;
 	private final Image image;
 
+	/**
+	 * Consstructs a new FishTank.
+	 * @param name The name of this FishTank.
+	 * @param price The price of this FishTank.
+	 * @param gallons The gallons this FishTank has.
+	 * @param image The image of this FishTank.
+	 */
 	public FishTank(
 		String name,
 		double price,
@@ -23,6 +32,9 @@ public class FishTank extends AquariumComponent {
 		this.image = getImage(image);
 	}
 
+	/**
+	 * @return The gallons this FishTank has.
+	 */
 	public double getGallons(){
 		return this.gallons;
 	}

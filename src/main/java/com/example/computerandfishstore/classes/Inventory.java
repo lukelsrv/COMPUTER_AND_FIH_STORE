@@ -4,6 +4,8 @@ import com.example.computerandfishstore.computer.classes.*;
 import com.example.computerandfishstore.computer.components.*;
 import com.example.computerandfishstore.computer.parts.*;
 import com.example.computerandfishstore.computer.parts.Rig.RigBuilder;
+import com.example.computerandfishstore.fish.Aquarium;
+import com.example.computerandfishstore.fish.Aquarium.AquariumBuilder;
 import com.example.computerandfishstore.fish.TankWater;
 import com.example.computerandfishstore.utils.ValidationResult;
 import com.example.computerandfishstore.fish.Fish;
@@ -13,11 +15,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Helper class for containing all constructed store items.
+ */
 public final class Inventory {
 
 	private static final List<StoreItem> INVENTORY = new ArrayList<>();
 	private static boolean inventoryInitialized = false;
 
+	/**
+	 * Initializes the inventory.
+	 */
 	private static void init() {
 		inventoryInitialized = true;
 		// Computers
@@ -144,14 +152,28 @@ public final class Inventory {
 			new TankWater("Fresh Water", false),
 			new TankWater("Salt Water", true)
 		));
+
+		//- Aquariums
+		INVENTORY.addAll(List.of(
+
+		));
 	}
 
+	/**
+	 * @return The inventory.
+	 */
 	public static List<StoreItem> getInventory() {
 		if (!inventoryInitialized)
 			init();
 		return INVENTORY;
 	}
 
+	/**
+	 * Gets all items in inventory that are of the provided type.
+	 * @param type The class of the type of items to get.
+	 * @return The items of the provided type.
+	 * @param <T> The type of item.
+	 */
 	public static <T> List<T> getInventory(Class<T> type) {
 		List<T> list = new ArrayList<>();
 		for (StoreItem part : getInventory()) {
@@ -163,6 +185,13 @@ public final class Inventory {
 		return list;
 	}
 
+	/**
+	 * Gets the items at the provided indices of the items that are of the provided type.
+	 * @param type The class of the type of items to get.
+	 * @param indices The n elements to get the items.
+	 * @return The items of the provided type.
+	 * @param <T> The type of item.
+	 */
 	public static <T extends StoreItem> List<T> getInventory(Class<T> type, int... indices) {
 		List<T> items = getInventory(type);
 		int size = items.size();
@@ -180,22 +209,41 @@ public final class Inventory {
 		return list;
 	}
 
+	/**
+	 * Gets the first item of the items that are of the provided type.
+	 * @param type The class of the type of item to get.
+	 * @return The item of the provided type.
+	 * @param <T> The type of item.
+	 */
 	public static <T extends StoreItem> T getSingle(Class<T> type) {
 		return getSingle(type, 0);
 	}
 
+	/**
+	 * Gets item of the items that are of the provided type at the provided index.
+	 * @param type The class of the type of item to get.
+	 * @param index The n element of the items to get from.
+	 * @return The item of the provided type.
+	 * @param <T> The type of item.
+	 */
 	public static <T extends StoreItem> T getSingle(Class<T> type, int index) {
-		List<T> items = getInventory(type);
-		int size = items.size();
-		assert size > 0;
-		if (index <= 0)
-			return items.get(0);
-		if (index >= size)
-			return items.get(size - 1);
-		return items.get(index);
+		List<T> items = getInventory(type, index);
+		assert items.size() == 1;
+		return items.get(0);
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
+	/**
+	 * Helper method for building a rig for inventory.
+	 * @param name The name of the Rig.
+	 * @param motherboard The motherboard of the Rig.
+	 * @param cpu The CPU of the Rig.
+	 * @param ram The RAM of the Rig.
+	 * @param gpu The GPU of the Rig.
+	 * @param storage The storage of the Rig.
+	 * @param cooler The CPU cooler of the Rig.
+	 * @param powerSupply The power supply of the Rig.
+	 * @return The constructed Rig.
+	 */
 	private static Rig buildRig(
 		String name,
 		Motherboard motherboard,
@@ -210,14 +258,39 @@ public final class Inventory {
 		builder.setName(name);
 		builder.add(motherboard, true);
 		builder.add(cpu, true);
-		builder.add((List) ram, true);
+		builder.add(ram, true);
 		builder.add(gpu, true);
-		builder.add((List) storage, true);
+		builder.add(storage, true);
 		builder.add(cooler, true);
 		builder.add(powerSupply, true);
 		ValidationResult<Rig> result = builder.build();
 		if (!result.valid())
 			throw new IllegalStateException("Invalid sample rig: " + result.message());
+		return result.result();
+	}
+
+	/**
+	 * Helper method for building an aquarium for inventory.
+	 * @param name The name of the Aquarium.
+	 * @param tank The fish tank of the Aquarium.
+	 * @param water The water type of the Aquarium.
+	 * @param fish The fish of the Aquarium.
+	 * @return The constructed Aquarium.
+	 */
+	private static Aquarium buildAquarium(
+		String name,
+		FishTank tank,
+		TankWater water,
+		List<Fish> fish
+	) {
+		AquariumBuilder builder = new AquariumBuilder();
+		builder.setName(name);
+		builder.add(tank, true);
+		builder.add(water, true);
+		builder.add(fish, true);
+		ValidationResult<Aquarium> result = builder.build();
+		if (!result.valid())
+			throw new IllegalStateException("Invalid sample aquarium: " + result.message());
 		return result.result();
 	}
 

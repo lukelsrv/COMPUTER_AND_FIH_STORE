@@ -1,4 +1,4 @@
-package com.example.computerandfishstore;
+package com.example.computerandfishstore.fish;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,12 +7,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class CFStoreMainMenu extends Application {
+public class AquariumBuilder extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(AquariumBuilder.class.getResource("CFStoreMainMenu.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(AquariumBuilder.class.getResource("AquariumBuilder.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-        stage.setTitle("Computer and Fish Store Main Menu");
+        stage.setTitle("Aquarium Builder");
         stage.setScene(scene);
         stage.show();
     }

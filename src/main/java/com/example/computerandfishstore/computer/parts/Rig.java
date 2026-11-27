@@ -1,6 +1,6 @@
 package com.example.computerandfishstore.computer.parts;
 
-import com.example.computerandfishstore.computer.Buildable;
+import com.example.computerandfishstore.classes.Buildable;
 import com.example.computerandfishstore.computer.classes.RigComponentType;
 import com.example.computerandfishstore.computer.classes.RigComponent;
 import com.example.computerandfishstore.computer.classes.ComputerPart;
@@ -16,7 +16,7 @@ import java.util.*;
  */
 public class Rig extends ComputerPart implements Buildable {
 
-	private static final Image IMAGE = getImage("CPUCOOLER.png");
+	private static final Image IMAGE = getImage("RIG.png");
 
 	private final Motherboard motherboard;
 	private final CPU cpu;
@@ -135,7 +135,7 @@ public class Rig extends ComputerPart implements Buildable {
 
 		private final Map<RigComponentType, List<Component<Rig>>> data = new HashMap<>();
 		private int currentIndex = 0;
-		private RigComponentType currentComponent = COMPONENT_TYPES[0];
+		private RigComponentType currentType = COMPONENT_TYPES[0];
 		private String name = "Custom Build";
 
 		/**
@@ -161,24 +161,25 @@ public class Rig extends ComputerPart implements Buildable {
 
 		@Override
 		public RigComponentType getCurrentType() {
-			return currentComponent;
+			return currentType;
 		}
 
 		@Override
 		public Validation selfNext() {
 			// Move on to the next component for customizing.
-			if (currentIndex >= COMPONENT_TYPES.length - 1) {
-				currentComponent = null;
+			if (currentIndex < 0) {
+				currentIndex = 0;
+			} else if (currentIndex >= COMPONENT_TYPES.length - 1) {
+				currentIndex = COMPONENT_TYPES.length - 1;
 			} else {
-				currentComponent = COMPONENT_TYPES[++currentIndex];
+				currentIndex++;
 			}
-			if (currentComponent != null) {
-				List<Component<Rig>> components = getData(currentComponent);
-				if (!components.isEmpty()) {
-					for (Component<Rig> component : components) {
-						if (!filter(component))
-							components.remove(component);
-					}
+			currentType = COMPONENT_TYPES[currentIndex];
+			List<Component<Rig>> components = getData(currentType);
+			if (!components.isEmpty()) {
+				for (Component<Rig> component : components) {
+					if (!filter(component))
+						components.remove(component);
 				}
 			}
 			return new Validation(true);
@@ -186,15 +187,25 @@ public class Rig extends ComputerPart implements Buildable {
 
 		@Override
 		public Validation prev() {
-			if (currentIndex >= 1) {
-				currentComponent = COMPONENT_TYPES[--currentIndex];
+			if (currentIndex < 0) {
+				currentIndex = 0;
+			} else if (currentIndex >= COMPONENT_TYPES.length) {
+				currentIndex = COMPONENT_TYPES.length - 1;
+			} else {
+				currentIndex--;
 			}
+			currentType = COMPONENT_TYPES[currentIndex];
 			return new Validation(true);
 		}
 
 		@Override
+		public boolean isStart() {
+			return currentIndex == 0;
+		}
+
+		@Override
 		public boolean isEnd() {
-			return currentIndex == COMPONENT_TYPES.length;
+			return currentIndex == COMPONENT_TYPES.length - 1;
 		}
 
 		@Override
@@ -205,7 +216,7 @@ public class Rig extends ComputerPart implements Buildable {
 		@Override
 		public boolean selfFilter(Component<Rig> component) {
 			RigComponent compComponent = (RigComponent) component;
-			return switch (currentComponent) {
+			return switch (currentType) {
 				case CPU -> { // Filters displayed CPUs by checking the brand types the selected Motherboard offers.
 					CPU cpu = (CPU) compComponent;
 					yield ((Motherboard) getSingle(RigComponentType.MOTHERBOARD)).getSupportedBrands().stream().anyMatch(cpu::supports);

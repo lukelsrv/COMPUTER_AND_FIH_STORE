@@ -1,7 +1,7 @@
 package com.example.computerandfishstore.computer.classes;
 
-import com.example.computerandfishstore.StoreItem;
-import com.example.computerandfishstore.computer.Buildable.Component;
+import com.example.computerandfishstore.MainMenu;
+import com.example.computerandfishstore.classes.StoreItem;
 import javafx.scene.image.Image;
 
 import java.util.List;
@@ -9,14 +9,7 @@ import java.util.List;
 /**
  * Typed class for Computer Parts.
  */
-public abstract class ComputerPart {
-
-	protected static Image getImage(String fileName) {
-		return new Image(StoreItem.class.getResource("Images/" + fileName).toExternalForm());
-	}
-
-	private final String name;
-	private final double price;
+public abstract class ComputerPart extends StoreItem {
 
 	/**
 	 * Constructs a new ComputerPart.
@@ -24,26 +17,9 @@ public abstract class ComputerPart {
 	 * @param price The price of this ComputerPart.
 	 */
 	public ComputerPart(String name, double price) {
-		this.name = name;
-		this.price = price;
+		super(name, price);
 	}
 
-	/**
-	 * @return The name of this ComputerPart.
-	 */
-	public String getName() {
-		return name;
-	}
 
-	/**
-	 * @return The price of this ComputerPart.
-	 */
-	public double getPrice() {
-		return price;
-	}
-
-	public abstract Image getImage();
-
-	public abstract List<String> getProperties();
 
 }

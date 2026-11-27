@@ -1,9 +1,15 @@
 package com.example.computerandfishstore.computer.components;
 
+import javafx.scene.image.Image;
+
+import java.util.List;
+
 /**
  * Typed class for HDD Storage.
  */
 public class HDD extends Storage {
+
+	private static final Image IMAGE = getImage("HDD.png");
 
 	/**
 	 * Constructs a new HDD.
@@ -15,6 +21,20 @@ public class HDD extends Storage {
 	 */
 	public HDD(String name, double price, int requiredPower, int capacityGB, boolean internal) {
 		super(name, price, requiredPower, capacityGB, internal);
+	}
+
+	@Override
+	public Image getImage() {
+		return IMAGE;
+	}
+
+	@Override
+	public List<String> getProperties() {
+		return List.of(
+			"Type: HDD",
+			"Internal: " + (isInternal() ? "Yes" : "No"),
+			"Capacity: " + getCapacityGB() + "GB"
+		);
 	}
 
 }

@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Keyboard extends ComputerPart {
 
-	private static final Image IMAGE = getImage("CPU.png");
+	private static final Image IMAGE = getImage("KEYBOARD.png");
 
 	private final KeyboardSize size;
 	private final boolean rgb;

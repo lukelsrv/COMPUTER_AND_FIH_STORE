@@ -1,10 +1,12 @@
-package com.example.computerandfishstore.computer;
+package com.example.computerandfishstore.classes;
 
 import com.example.computerandfishstore.computer.classes.*;
 import com.example.computerandfishstore.computer.components.*;
 import com.example.computerandfishstore.computer.parts.*;
 import com.example.computerandfishstore.computer.parts.Rig.RigBuilder;
 import com.example.computerandfishstore.computer.utils.ValidationResult;
+import com.example.computerandfishstore.fish.Fish;
+import com.example.computerandfishstore.fish.FishTank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,94 +14,95 @@ import java.util.Set;
 
 public final class Inventory {
 
-	private static final List<ComputerPart> INVENTORY = new ArrayList<>();
+	private static final List<StoreItem> INVENTORY = new ArrayList<>();
 	private static boolean inventoryInitialized = false;
 
 	private static void init() {
 		inventoryInitialized = true;
-		// Components
-		//- CPUs
+		// Computers
+		//- Components
+		//-- CPUs
 		INVENTORY.addAll(List.of(
 			new CPU("Intel Core i5-14600K", 319.99, 125, BrandType.INTEL, 14, 1),
 			new CPU("AMD Ryzen 7 7800X3D", 399.99, 120, BrandType.AMD, 8, 1),
 			new CPU("Intel Core i9-14900K", 589.99, 253, BrandType.INTEL, 24, 1)
 		));
 
-		//- HeatSinks
+		//-- HeatSinks
 		INVENTORY.addAll(List.of(
 			new HeatSink("Cooler Master Hyper 212", 39.99, 5),
 			new HeatSink("Noctua NH-D15", 119.99, 5)
 		));
 
-		//- LiquidCoolers
+		//-- LiquidCoolers
 		INVENTORY.addAll(List.of(
 			new LiquidCooler("Arctic Liquid Freezer III 240", 109.99, 10),
 			new LiquidCooler("NZXT Kraken 360", 179.99, 15)
 		));
 
-		//- GPUs
+		//-- GPUs
 		INVENTORY.addAll(List.of(
 			new GPU("NVIDIA GeForce RTX 4060", 299.99, 115, 8),
 			new GPU("AMD Radeon RX 7800 XT", 499.99, 263, 16),
 			new GPU("NVIDIA GeForce RTX 4080 SUPER", 999.99, 320, 16)
 		));
 
-		//- Motherboards
+		//-- Motherboards
 		INVENTORY.addAll(List.of(
 			new Motherboard("MSI B760 Tomahawk WiFi DDR5", 189.99, 60, 5, Set.of(BrandType.INTEL)),
 			new Motherboard("ASUS TUF Gaming B650-Plus", 199.99, 60, 5, Set.of(BrandType.AMD)),
 			new Motherboard("Gigabyte Z790 AORUS Elite AX", 269.99, 70, 5, Set.of(BrandType.INTEL, BrandType.AMD))
 		));
 
-		//- PowerSupplies
+		//-- PowerSupplies
 		INVENTORY.addAll(List.of(
 			new PowerSupply("Corsair RM650e 650W", 89.99, 650),
 			new PowerSupply("Seasonic Focus GX-850 850W", 139.99, 850),
 			new PowerSupply("Corsair RM1000x 1000W", 189.99, 1000)
 		));
 
-		//- RAM
+		//-- RAM
 		INVENTORY.addAll(List.of(
 			new RAM("Corsair Vengeance DDR5 16GB", 54.99, 5, 5, 5600, 16),
 			new RAM("G.Skill Flare X5 DDR5 32GB", 99.99, 8, 5, 6000, 32),
 			new RAM("Kingston Fury Beast DDR5 64GB", 189.99, 10, 5, 6000, 64)
 		));
 
-		//- HDDs
+		//-- HDDs
 		INVENTORY.addAll(List.of(
 			new HDD("Seagate BarraCuda 2TB", 59.99, 8, 2000, true),
 			new HDD("WD Elements External 5TB", 119.99, 8, 5000, false)
 		));
 
-		//- SSDs
+		//-- SSDs
 		INVENTORY.addAll(List.of(
 			new SSD("Samsung 990 EVO 1TB", 89.99, 5, 1000, true),
 			new SSD("Samsung T7 Portable SSD 2TB", 169.99, 5, 2000, false)
 		));
 
-		// Parts
-		//- Keyboards
+		//- Parts
+		//-- Keyboards
 		INVENTORY.addAll(List.of(
 			new Keyboard("Logitech K120", 19.99, KeyboardSize.FULL, false),
 			new Keyboard("Keychron K8", 89.99, KeyboardSize.TKL, true),
 			new Keyboard("Razer Huntsman Mini", 119.99, KeyboardSize.MINI, true)
 		));
 
-		//- Monitors
+		//-- Monitors
 		INVENTORY.addAll(List.of(
 			new Monitor("LG UltraGear 27-inch 4K", 399.99, 27, 27, Resolution.FOUR_K),
 			new Monitor("ASUS ROG Swift 32-inch 4K", 899.99, 32, 32, Resolution.FOUR_K),
 			new Monitor("Dell UltraSharp 32-inch 8K", 3999.99, 32, 32, Resolution.EIGHT_K)
 		));
 
-		//- Mice
+		//-- Mice
 		INVENTORY.addAll(List.of(
 			new Mouse("Logitech G203", 29.99, MouseType.OPTICAL),
 			new Mouse("Logitech G502 X", 79.99, MouseType.LASER),
 			new Mouse("SteelSeries Rival 3", 39.99, MouseType.MECHANICAL)
 		));
 
-		//- Rigs
+		//-- Rigs
 		INVENTORY.addAll(List.of(
 			buildRig("Intel Starter", getSingle(Motherboard.class), getSingle(CPU.class), List.of(getSingle(RAM.class)),
 				getSingle(GPU.class), List.of(getSingle(SSD.class)), getSingle(LiquidCooler.class), getSingle(PowerSupply.class)),
@@ -111,9 +114,32 @@ public final class Inventory {
 				getSingle(GPU.class, 1), List.of(getSingle(HDD.class), getSingle(HDD.class, 1)),
 				getSingle(HeatSink.class), getSingle(PowerSupply.class, 2))
 		));
+
+		// Fish
+		//- Fish
+		INVENTORY.addAll(List.of(
+			new Fish("Golden Arowana", 5000, true, true, true, 100),
+			new Fish("Burmese Greenfish", 15, false, false, false, 2),
+			new Fish("Blue Sea Bass", 18, false, true, true, 10),
+			new Fish("Orange Sandshark", 2500, true, true, true, 500),
+			new Fish("Purple Mini Stingray", 150, false, false, false, 1),
+			new Fish("Goldfish", 5, false, false, false, 1),
+			new Fish("Brazilian Silver Pacu", 200, true, false, false, 50),
+			new Fish("European Teal Eel", 120, true, true, false, 100),
+			new Fish("Pink Nebula Beta", 20, false, false, false, 1)
+		));
+
+		//- Tanks
+		INVENTORY.addAll(List.of(
+			new FishTank("Small Tank", 30, 10),
+			new FishTank("Medium Tank", 60, 50),
+			new FishTank("Large Tank", 200, 100),
+			new FishTank("Extra Large Tank", 800, 500),
+			new FishTank("Mega Tank", 3200, 2000)
+		));
 	}
 
-	public static List<ComputerPart> getInventory() {
+	public static List<StoreItem> getInventory() {
 		if (!inventoryInitialized)
 			init();
 		return INVENTORY;
@@ -121,7 +147,7 @@ public final class Inventory {
 
 	public static <T> List<T> getInventory(Class<T> type) {
 		List<T> list = new ArrayList<>();
-		for (ComputerPart part : getInventory()) {
+		for (StoreItem part : getInventory()) {
 			if (type.isInstance(part)) {
 				//noinspection unchecked
 				list.add((T) part);
@@ -130,7 +156,7 @@ public final class Inventory {
 		return list;
 	}
 
-	public static <T extends ComputerPart> List<T> getInventory(Class<T> type, int... indices) {
+	public static <T extends StoreItem> List<T> getInventory(Class<T> type, int... indices) {
 		List<T> items = getInventory(type);
 		int size = items.size();
 		List<T> list = new ArrayList<>();
@@ -147,11 +173,11 @@ public final class Inventory {
 		return list;
 	}
 
-	public static <T extends ComputerPart> T getSingle(Class<T> type) {
+	public static <T extends StoreItem> T getSingle(Class<T> type) {
 		return getSingle(type, 0);
 	}
 
-	public static <T extends ComputerPart> T getSingle(Class<T> type, int index) {
+	public static <T extends StoreItem> T getSingle(Class<T> type, int index) {
 		List<T> items = getInventory(type);
 		int size = items.size();
 		assert size > 0;

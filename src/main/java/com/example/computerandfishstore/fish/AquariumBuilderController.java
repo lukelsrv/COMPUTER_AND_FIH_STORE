@@ -1,5 +1,6 @@
-package com.example.computerandfishstore;
+package com.example.computerandfishstore.fish;
 
+import com.example.computerandfishstore.MainMenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -481,7 +482,7 @@ public class AquariumBuilderController {
             try {
                 System.out.println("Exit the screen and go back to the main menu");
                 //Loads the FXML file for the aquarium builder scene and assigns it to the variable "root"
-                Parent root = FXMLLoader.load(getClass().getResource("CFStoreMainMenu.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
                 //Creates a new stage object for it to use
                 Stage stage = (Stage) BackButton.getScene().getWindow();
                 //creates a new scene using the variable assigned to the FXMLLoader
@@ -521,15 +522,11 @@ public class AquariumBuilderController {
                 try {
                     System.out.println("Exit the screen and go back to the main menu");
                     //Loads the FXML file for the aquarium builder scene and assigns it to the variable "loader"
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("CFStoreMainMenu.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
                     //loads the loader assigned to a new parent object called "root"
                     Parent root = loader.load();
                     // Get the main menu controller
-                    CFStoreMainMenuController controller = loader.getController();
-                    //Pass this aquarium controller into the increment total method in main menu along with the total price of the aquarium
-                    controller.incrementTotal(this, this.aquariumTotal);
-                    //call the increment aquarium method in the main menu everytime the next button is pressed under these conditions
-                    controller.incrementCustomBuildCounter();
+                    MainMenuController controller = loader.getController();
                     //also update what is being displayed in the main menu
                     controller.displayCart();
                     //Creates a new stage object for it to use

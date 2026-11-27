@@ -1,6 +1,6 @@
 package com.example.computerandfishstore.computer.classes;
 
-import com.example.computerandfishstore.computer.Buildable.ComponentType;
+import com.example.computerandfishstore.classes.Buildable.ComponentType;
 import com.example.computerandfishstore.computer.components.*;
 import com.example.computerandfishstore.computer.parts.Rig;
 

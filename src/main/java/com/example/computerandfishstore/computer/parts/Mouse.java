@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Mouse extends ComputerPart {
 
-	private static final Image IMAGE = getImage("CPU.png");
+	private static final Image IMAGE = getImage("MOUSE.png");
 
 	private final MouseType mouseType;
 

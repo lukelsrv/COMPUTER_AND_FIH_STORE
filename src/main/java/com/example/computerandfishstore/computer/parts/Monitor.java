@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Monitor extends ComputerPart {
 
-	private static final Image IMAGE = getImage("CPU.png");
+	private static final Image IMAGE = getImage("MONITOR.png");
 
 	private final int screenWidth;
 	private final int screenLength;

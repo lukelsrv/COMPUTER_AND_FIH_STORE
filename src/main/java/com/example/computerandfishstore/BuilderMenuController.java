@@ -4,11 +4,10 @@ import com.example.computerandfishstore.classes.Buildable;
 import com.example.computerandfishstore.classes.Buildable.Builder;
 import com.example.computerandfishstore.classes.Buildable.Component;
 import com.example.computerandfishstore.classes.Buildable.ComponentType;
-import com.example.computerandfishstore.classes.Cart;
 import com.example.computerandfishstore.classes.Inventory;
 import com.example.computerandfishstore.classes.StoreItem;
-import com.example.computerandfishstore.utils.Validation;
-import com.example.computerandfishstore.utils.ValidationResult;
+import com.example.computerandfishstore.classes.Validation;
+import com.example.computerandfishstore.classes.ValidationResult;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -80,6 +79,7 @@ public class BuilderMenuController<B extends Buildable, C extends ComponentType<
 				}
 			} else { // Builder not done, move to next component to customize.
 				builder.next();
+				updateCart();
 				updateInventory();
 			}
 		});
@@ -88,6 +88,7 @@ public class BuilderMenuController<B extends Buildable, C extends ComponentType<
 				toMainMenu();
 			} else { // Otherwise, go back and edit components.
 				builder.prev();
+				updateCart();
 				updateInventory();
 			}
 		});

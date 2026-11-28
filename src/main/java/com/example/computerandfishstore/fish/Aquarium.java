@@ -2,9 +2,8 @@ package com.example.computerandfishstore.fish;
 
 import com.example.computerandfishstore.classes.Buildable;
 import com.example.computerandfishstore.classes.StoreItem;
-import com.example.computerandfishstore.computer.parts.Rig;
-import com.example.computerandfishstore.utils.Validation;
-import com.example.computerandfishstore.utils.ValidationResult;
+import com.example.computerandfishstore.classes.Validation;
+import com.example.computerandfishstore.classes.ValidationResult;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
@@ -118,10 +117,7 @@ public class Aquarium extends StoreItem implements Buildable {
 			currentType = COMPONENT_TYPES[currentIndex];
 			List<Component<Aquarium>> components = getData(currentType);
 			if (!components.isEmpty()) { // This component type already has components, remove ones that don't fit anymore.
-				for (Component<Aquarium> component : components) {
-					if (!filter(component))
-						components.remove(component);
-				}
+				components.removeIf(component -> !filter(component));
 			}
 			return new Validation(true);
 		}

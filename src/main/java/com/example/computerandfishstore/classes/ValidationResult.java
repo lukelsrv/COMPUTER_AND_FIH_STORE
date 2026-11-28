@@ -1,4 +1,4 @@
-package com.example.computerandfishstore.utils;
+package com.example.computerandfishstore.classes;
 
 /**
  * Helper class for getting data and ensuring it validity, otherwise contains reasoning for failure.

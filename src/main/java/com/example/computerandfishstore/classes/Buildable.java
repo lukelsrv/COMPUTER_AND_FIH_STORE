@@ -1,8 +1,5 @@
 package com.example.computerandfishstore.classes;
 
-import com.example.computerandfishstore.utils.Validation;
-import com.example.computerandfishstore.utils.ValidationResult;
-
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;

@@ -5,8 +5,8 @@ import com.example.computerandfishstore.computer.classes.RigComponentType;
 import com.example.computerandfishstore.computer.classes.RigComponent;
 import com.example.computerandfishstore.computer.classes.ComputerPart;
 import com.example.computerandfishstore.computer.components.*;
-import com.example.computerandfishstore.utils.Validation;
-import com.example.computerandfishstore.utils.ValidationResult;
+import com.example.computerandfishstore.classes.Validation;
+import com.example.computerandfishstore.classes.ValidationResult;
 import javafx.scene.image.Image;
 
 import java.util.*;

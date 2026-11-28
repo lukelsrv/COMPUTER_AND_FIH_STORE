@@ -135,7 +135,7 @@ public final class Inventory {
 			new Fish("Goldfish", 5, false, false, false, 1, "GOLDFISH.png"),
 			new Fish("Brazilian Silver Pacu", 200, true, false, false, 50, "BRAZILIANSILVERPACU.png"),
 			new Fish("European Teal Eel", 120, true, true, false, 100, "EUROPEANTEALEEL.png"),
-			new Fish("Pink Nebula Beta", 20, false, false, false, 1, "PINKNEBULABETA.png")
+			new Fish("Pink Nebula Guppy", 20, false, false, false, 1, "PINKNEBULABETA.png")
 		));
 
 		//- Tanks
@@ -153,9 +153,33 @@ public final class Inventory {
 			new TankWater("Salt Water", true)
 		));
 
-		//- Aquariums
+		//-- Aquariums
 		INVENTORY.addAll(List.of(
+			buildAquarium("Freshwater Starter Tank", getSingle(FishTank.class), getSingle(TankWater.class),
+				List.of(
+					getSingle(Fish.class, 1),
+					getSingle(Fish.class, 1),
+					getSingle(Fish.class, 5),
+					getSingle(Fish.class, 5),
+					getSingle(Fish.class, 5)
+				)),
+			buildAquarium("Blue Sea Bass Quintet", getSingle(FishTank.class, 3), getSingle(TankWater.class, 1),
+				List.of(
+					getSingle(Fish.class, 2),
+					getSingle(Fish.class, 2),
+					getSingle(Fish.class, 2),
+					getSingle(Fish.class, 2),
+					getSingle(Fish.class, 2)
+				)),
 
+			buildAquarium("Shark's Cove", getSingle(FishTank.class, 4), getSingle(TankWater.class, 1),
+				List.of(
+					getSingle(Fish.class, 3),
+					getSingle(Fish.class, 3),
+					getSingle(Fish.class, 3),
+					getSingle(Fish.class, 3),
+					getSingle(Fish.class, 3)
+				))
 		));
 	}
 

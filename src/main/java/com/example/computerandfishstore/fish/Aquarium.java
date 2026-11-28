@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class Aquarium extends StoreItem implements Buildable {
 
-	private static final Image IMAGE = getImage("");
+	private static final Image IMAGE = getImage("AQUARIUM.png");
 
 	private final FishTank tank;
 	private final List<Fish> fishes;

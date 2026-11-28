@@ -55,6 +55,9 @@ public class MainMenuController {
 		//The controls for the Build Aquarium button
 		buildComputerButton.setOnMouseClicked(event -> toBuilder(new RigBuilder()));
 
+		//The controls for the Build Aquarium button
+		checkoutButton.setOnMouseClicked(event -> toCheckout());
+
 	}
 
 	/**
@@ -88,6 +91,19 @@ public class MainMenuController {
 		Stage stage = (Stage) buildAquariumButton.getScene().getWindow();
 		BuilderMenuController<B, C> builderMenuController = loader.getController();
 		builderMenuController.init(builder);
+		stage.setScene(new Scene(root));
+		stage.show();
+	}
+
+	private void toCheckout() {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("Checkout.fxml"));
+		Parent root;
+		try {
+			root = loader.load();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		Stage stage = (Stage) checkoutButton.getScene().getWindow();
 		stage.setScene(new Scene(root));
 		stage.show();
 	}

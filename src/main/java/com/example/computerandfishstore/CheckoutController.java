@@ -1,6 +1,5 @@
 package com.example.computerandfishstore;
 
-import com.example.computerandfishstore.classes.Cart;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,6 +10,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Controller class for the Checkout Menu.
+ */
 public class CheckoutController {
 	@FXML
 	private Button ConfirmCheckout;
@@ -21,7 +23,10 @@ public class CheckoutController {
 	@FXML
 	private TextArea CartTextArea;
 
-	@FXML
+	/**
+	 * Initializes the controller and displays the cart of items added by the user along with the total by calling the displayCart method
+	 * Assigns actioin events to the checkout and back buttons which call the appropriate methods.
+	 */
 	public void initialize() {
 		displayCart();
 
@@ -31,6 +36,9 @@ public class CheckoutController {
 			checkoutToMainMenu());
 	}
 
+	/**
+	 * Helper method to go back to the main menu
+	 */
 	private void backToMainMenu() {
 		try {
 			FXMLLoader loader = new FXMLLoader(MainMenu.class.getResource("MainMenu.fxml"));
@@ -41,6 +49,10 @@ public class CheckoutController {
 		} catch (IOException e) {}
 	}
 
+	/**
+	 * Helper method to check out and return to the main menu
+	 * also clears the cart to demonstrate that the user has checked out and has the option to start another cart
+	 */
 	private void checkoutToMainMenu() {
 		try {
 			MainMenuController.CART.clearCart();

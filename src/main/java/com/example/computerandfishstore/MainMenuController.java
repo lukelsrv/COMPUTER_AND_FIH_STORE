@@ -95,6 +95,9 @@ public class MainMenuController {
 		stage.show();
 	}
 
+	/**
+	 * Helper method to open the CheckoutMenu.
+	 */
 	private void toCheckout() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("Checkout.fxml"));
 		Parent root;

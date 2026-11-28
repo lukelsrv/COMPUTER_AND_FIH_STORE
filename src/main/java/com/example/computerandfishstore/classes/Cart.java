@@ -137,6 +137,9 @@ public class Cart {
 		}
 	}
 
+	/**
+	 * Clears the cart of all its items
+	 */
 	public void clearCart(){
 		items.clear();
 	}
